@@ -5270,5 +5270,5242 @@ window.showSafariMenu = showSafariMenu;
 
 </script>
 </body>
+</html>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* GPU硬件加速样式 */
+.gpu-accelerated * {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.gpu-accelerated .app,
+.gpu-accelerated .page,
+.gpu-accelerated .subpage,
+.gpu-accelerated .fluid-cloud,
+.gpu-accelerated .control-center,
+.gpu-accelerated .fullscreen-lyrics {
+  will-change: transform, opacity;
+}
+
+.gpu-accelerated .icon-grid,
+.gpu-accelerated .dock,
+.gpu-accelerated .group,
+.gpu-accelerated .item {
+  will-change: transform;
+}
+
+/* 高级材质 - 模糊特效 */
+.advanced-materials .blur,
+.advanced-materials .app:before,
+.advanced-materials .control-center-bg,
+.advanced-materials .fluid-cloud-collapsed,
+.advanced-materials .fluid-cloud-expanded {
+  backdrop-filter: blur(30px) saturate(1.8);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+}
+
+/* 关闭高级材质时移除模糊 */
+body:not(.advanced-materials) .blur,
+body:not(.advanced-materials) .app:before,
+body:not(.advanced-materials) .control-center-bg,
+body:not(.advanced-materials) .fluid-cloud-collapsed,
+body:not(.advanced-materials) .fluid-cloud-expanded {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--black);
+  touch-action: none;
+  transition: background 0.5s var(--ios-smooth);
+}
+
+.phone {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--black);
+  border-radius: 28px;
+  overflow: hidden;
+  /* 移除背景颜色过渡，确保r角颜色不变 */
+}
+
+/* 深色模式 */
+body.dark-mode {
+  background: var(--black);
+}
+
+/* 保持r角颜色不变 */
+body.dark-mode .phone {
+  background: var(--black);
+  /* 确保r角颜色不随深色模式变化 */
+}
+
+/* 深色模式样式 */
+body.dark-mode .app {
+  background: var(--dark-bg-gray);
+}
+
+body.dark-mode .app-body {
+  background: var(--dark-bg-gray);
+}
+
+body.dark-mode .page {
+  background: var(--dark-bg-gray);
+}
+
+body.dark-mode .subpage {
+  background: var(--dark-bg-gray);
+}
+
+body.dark-mode .group {
+  background: var(--dark-white);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .item {
+  border-bottom-color: var(--dark-line-gray);
+}
+
+body.dark-mode .chat-item {
+  border-bottom-color: var(--dark-line-gray);
+}
+
+body.dark-mode .item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+body.dark-mode .item:active {
+  background: rgba(255,255,255,0.06);
+}
+
+body.dark-mode .item-text {
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode .item-desc {
+  color: var(--dark-text-gray);
+}
+
+body.dark-mode .item-arrow {
+  color: var(--dark-text-gray);
+}
+
+body.dark-mode .about-name {
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode .about-version {
+  color: var(--dark-text-gray);
+}
+
+/* 深色模式 - 信息聊天页面 */
+body.dark-mode #subpage-msg-chat div[style*="background: #e5e5ea"] {
+  background: var(--dark-line-gray) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+/* 深色模式 - 音乐播放页面 */
+body.dark-mode .music-title {
+  color: var(--dark-text-primary) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .music-singer {
+  color: var(--dark-text-gray) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .play-btn {
+  background: var(--dark-text-primary) !important;
+  color: var(--dark-bg-gray) !important;
+  transition: background 0.5s var(--ios-smooth), color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .progress-time span {
+  color: var(--dark-text-gray) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .play-controls div {
+  color: var(--dark-text-primary) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+/* 深色模式 - 信息页面联系人文字 */
+body.dark-mode .chat-name {
+  color: var(--dark-text-primary) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .chat-msg {
+  color: var(--dark-text-gray) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .chat-time {
+  color: var(--dark-text-gray) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+/* 深色模式 - 拨号盘 */
+body.dark-mode #dial-display {
+  color: var(--dark-text-primary) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode #dial-hint {
+  color: var(--dark-text-gray) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode #call-hint {
+  color: var(--dark-text-gray) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .dial-btn {
+  background: var(--dark-line-gray) !important;
+  color: var(--dark-text-primary) !important;
+  transition: background 0.5s var(--ios-smooth), color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .dial-btn:active {
+  background: var(--dark-text-gray) !important;
+}
+
+body.dark-mode .dial-action-btn {
+  background: var(--dark-line-gray) !important;
+  color: var(--dark-text-primary) !important;
+  transition: background 0.5s var(--ios-smooth), color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .dial-action-btn:active {
+  background: var(--dark-text-gray) !important;
+}
+
+/* Safari浏览器样式 */
+#page-safari {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-gray);
+}
+
+.safari-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--bg-gray);
+  border-bottom: 1px solid var(--line-gray);
+  gap: 8px;
+}
+
+.safari-nav-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.safari-nav-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+.safari-nav-btn.active {
+  opacity: 1;
+}
+
+.safari-nav-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-primary);
+}
+
+.safari-address-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.safari-lock-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.safari-lock-icon svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--text-gray);
+}
+
+.safari-address-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.safari-address-bar input::placeholder {
+  color: var(--text-gray);
+}
+
+.safari-refresh-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.safari-refresh-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--text-gray);
+}
+
+.safari-menu-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.safari-menu-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--text-gray);
+}
+
+.safari-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-gray);
+}
+
+#safari-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: none;
+  background: #fff;
+}
+
+#safari-iframe.active {
+  display: block;
+}
+
+.safari-home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.safari-home.hidden {
+  display: none;
+}
+
+.safari-favorites-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.safari-favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.safari-favorite-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+
+.safari-favorite-item:active {
+  background: rgba(0,0,0,0.05);
+}
+
+.safari-favorite-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.safari-favorite-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.safari-toolbar {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 calc(8px + var(--safe-bottom));
+  background: var(--bg-gray);
+  border-top: 1px solid var(--line-gray);
+}
+
+.safari-tool-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 4px 16px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.safari-tool-btn:active {
+  background: rgba(0,0,0,0.05);
+}
+
+.safari-tool-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--primary-blue);
+}
+
+.safari-tool-btn span {
+  font-size: 10px;
+  color: var(--text-gray);
+}
+
+/* 深色模式 - 浏览器 */
+body.dark-mode #page-safari {
+  background: var(--dark-bg-gray);
+}
+
+body.dark-mode .safari-header {
+  background: var(--dark-bg-gray);
+  border-bottom-color: var(--dark-line-gray);
+}
+
+body.dark-mode .safari-nav-btn svg {
+  fill: var(--dark-text-primary);
+}
+
+body.dark-mode .safari-address-bar {
+  background: var(--dark-line-gray);
+}
+
+body.dark-mode .safari-address-bar input {
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode .safari-address-bar input::placeholder {
+  color: var(--dark-text-gray);
+}
+
+body.dark-mode .safari-lock-icon svg,
+body.dark-mode .safari-refresh-btn svg,
+body.dark-mode .safari-menu-btn svg {
+  fill: var(--dark-text-gray);
+}
+
+body.dark-mode .safari-content {
+  background: var(--dark-bg-gray);
+}
+
+body.dark-mode .safari-favorites-title {
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode .safari-favorite-name {
+  color: var(--dark-text-secondary);
+}
+
+body.dark-mode .safari-favorite-item:active {
+  background: rgba(255,255,255,0.05);
+}
+
+body.dark-mode .safari-toolbar {
+  background: var(--dark-bg-gray);
+  border-top-color: var(--dark-line-gray);
+}
+
+body.dark-mode .safari-tool-btn span {
+  color: var(--dark-text-gray);
+}
+
+/* 深色模式 - 控制中心计算器按钮 */
+body.dark-mode .shortcut-item {
+  background: var(--dark-line-gray) !important;
+  color: var(--dark-text-primary) !important;
+  transition: background 0.5s var(--ios-smooth), color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .shortcut-item:active {
+  background: var(--dark-text-gray) !important;
+}
+
+body.dark-mode .shortcut-icon {
+  color: var(--dark-text-primary) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+body.dark-mode .shortcut-text {
+  color: var(--dark-text-primary) !important;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+#lock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.dmoe.cc/random.php') center/cover;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(var(--safe-top) + 60px);
+  color: #fff;
+  border-radius: 28px;
+  transition: opacity 0.5s var(--ios-ease), transform 0.6s var(--ios-spring);
+  cursor: grab;
+  will-change: opacity, transform;
+}
+
+#lock.unlocking {
+  opacity: 0;
+  transform: translateY(-50px) scale(0.92);
+  pointer-events: none;
+}
+
+.lock-time { 
+  font-size: 68px; 
+  font-weight: 200; 
+  letter-spacing: -2px; 
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.lock-date { 
+  font-size: 17px; 
+  opacity: 0.9; 
+  margin-top: 4px; 
+  text-shadow: 0 1px 10px rgba(0,0,0,0.5);
+}
+
+.lock-swipe { 
+  margin-top: auto; 
+  margin-bottom: calc(var(--safe-bottom) + 40px); 
+  font-size: 15px; 
+  opacity: 0.8; 
+  cursor: pointer;
+  padding: 20px;
+  transition: all 0.3s var(--ios-smooth);
+  text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+}
+
+#desktop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.dmoe.cc/random.php') center/cover;
+  padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 24px) calc(var(--safe-bottom) + 120px) calc(var(--safe-left) + 24px);
+  z-index: 1;
+  opacity: 0;
+  transform: scale(1.15);
+  border-radius: 28px;
+  transition: opacity 0.6s var(--ios-ease), transform 0.7s var(--ios-spring);
+  will-change: opacity, transform;
+}
+
+#desktop.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#desktop.app-open {
+  transform: scale(1.2);
+  transition: opacity 0.6s var(--ios-ease), transform 0.6s var(--ios-spring);
+  /* 壁纸缩放不提升z-index，让blur层保持在上方显示模糊效果 */
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px 16px;
+  width: 100%;
+  height: auto;
+  padding: 20px 0;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(60px) scale(0.8);
+  transition: opacity 0.5s var(--ios-smooth), transform 0.6s var(--ios-spring);
+}
+
+#desktop.show .icon-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#desktop.show .icon-item:nth-child(1) { transition-delay: 0.06s; }
+#desktop.show .icon-item:nth-child(2) { transition-delay: 0.1s; }
+#desktop.show .icon-item:nth-child(3) { transition-delay: 0.14s; }
+#desktop.show .icon-item:nth-child(4) { transition-delay: 0.18s; }
+#desktop.show .icon-item:nth-child(5) { transition-delay: 0.22s; }
+#desktop.show .icon-item:nth-child(6) { transition-delay: 0.26s; }
+#desktop.show .icon-item:nth-child(7) { transition-delay: 0.3s; }
+#desktop.show .icon-item:nth-child(8) { transition-delay: 0.34s; }
+
+.icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px) saturate(1.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #fff;
+  transition: all 0.3s var(--ios-bounce);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.icon svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+.icon-item:hover .icon {
+  background: rgba(255,255,255,0.25);
+  transform: scale(1.1) translateY(-2px);
+}
+
+.icon-item:active .icon {
+  transform: scale(0.92);
+}
+
+.icon-label {
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  font-weight: 500;
+}
+
+#dock {
+  position: absolute;
+  bottom: calc(var(--safe-bottom) + 20px);
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  width: 90%;
+  max-width: 400px;
+  height: 80px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(25px) saturate(1.8);
+  border-radius: 30px;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 20px;
+  opacity: 0;
+  transition: opacity 0.5s var(--ios-smooth), transform 0.6s var(--ios-spring);
+  will-change: opacity, transform;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+#desktop.show ~ #dock {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.3s var(--ios-smooth), transform 0.4s var(--ios-bounce);
+}
+
+/* 应用打开时 Dock 栏下移出屏幕 */
+#desktop.app-open ~ #dock {
+  opacity: 0;
+  transform: translateX(-50%) translateY(150px);
+  transition: opacity 0.25s var(--ios-smooth), transform 0.35s var(--ios-ease);
+}
+
+.dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dock-item .icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+}
+
+#status {
+  position: fixed;
+  top: var(--safe-top);
+  left: var(--safe-left);
+  right: var(--safe-right);
+  height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  z-index: 10000;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ios-smooth), transform 0.4s var(--ios-ease);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+#status.hidden {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+#blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0);
+  backdrop-filter: blur(0px);
+  z-index: 90;
+  pointer-events: none;
+  transition: background 0.3s var(--ios-smooth), backdrop-filter 0.3s var(--ios-smooth);
+  will-change: backdrop-filter, background;
+  border-radius: 28px;
+}
+
+#blur.active {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(40px) saturate(1.8);
+}
+
+#blur.app-open {
+  transition: background 0.3s var(--ios-smooth), backdrop-filter 0.3s var(--ios-smooth);
+}
+
+/* ==================== 流体云样式 ==================== */
+.fluid-cloud {
+  position: fixed;
+  top: calc(var(--safe-top) + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 100001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ios-spring), transform 0.5s var(--ios-spring);
+}
+
+/* 音乐应用打开时隐藏流体云 */
+.fluid-cloud.in-music-app,
+.fluid-cloud.in-control-center {
+  opacity: 0 !important;
+  transform: translateX(-50%) translateY(-100px) !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.fluid-cloud.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.fluid-cloud.show .fluid-cloud-collapsed,
+.fluid-cloud.show .fluid-cloud-expanded {
+  pointer-events: auto;
+}
+
+/* 收起状态 */
+.fluid-cloud-collapsed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px) saturate(1.8);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  min-width: 120px;
+  max-width: 220px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: fluidCloudFloat 3s ease-in-out infinite;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fluid-cloud-collapsed:hover {
+  background: rgba(30, 30, 30, 0.9);
+  transform: scale(1.02);
+  box-shadow:
+    0 6px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.fluid-cloud-collapsed:active {
+  transform: scale(0.98);
+}
+
+.fluid-cloud.expanded .fluid-cloud-collapsed {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+@keyframes fluidCloudFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.fluid-cloud-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #FF2D55 0%, #FF6B35 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  animation: fluidCloudPulse 2s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.fluid-cloud-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+}
+
+@keyframes fluidCloudPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 45, 85, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 45, 85, 0);
+  }
+}
+
+.fluid-cloud-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fluid-cloud-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fluid-cloud-subtitle {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 展开状态 */
+.fluid-cloud-expanded {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  width: 240px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(30px) saturate(1.8);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: top center;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.fluid-cloud.expanded .fluid-cloud-expanded {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+@keyframes fluidCloudExpand {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.fluid-cloud-expanded-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.fluid-cloud-expanded-cover {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #FF2D55 0%, #FF6B35 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 20px rgba(255, 45, 85, 0.3);
+}
+
+.fluid-cloud-expanded-info {
+  text-align: center;
+  width: 100%;
+}
+
+.fluid-cloud-expanded-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.fluid-cloud-expanded-album {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fluid-cloud-expanded-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.fluid-cloud-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s var(--ios-smooth);
+  border: none;
+  outline: none;
+}
+
+.fluid-cloud-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.fluid-cloud-btn:active {
+  transform: scale(0.95);
+}
+
+.fluid-cloud-btn.play-pause {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  font-size: 18px;
+}
+
+.fluid-cloud-btn.play-pause:hover {
+  background: #fff;
+  transform: scale(1.05);
+}
+
+/* 流体云波形动画 */
+.fluid-cloud-wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
+  margin-left: 6px;
+}
+
+.fluid-cloud-wave span {
+  width: 2px;
+  background: linear-gradient(to top, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+  border-radius: 1px;
+  animation: fluidCloudWave 1s ease-in-out infinite;
+}
+
+.fluid-cloud-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+.fluid-cloud-wave span:nth-child(2) { height: 12px; animation-delay: 0.1s; }
+.fluid-cloud-wave span:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+.fluid-cloud-wave span:nth-child(4) { height: 14px; animation-delay: 0.3s; }
+.fluid-cloud-wave span:nth-child(5) { height: 10px; animation-delay: 0.4s; }
+
+@keyframes fluidCloudWave {
+  0%, 100% {
+    transform: scaleY(0.6);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.fluid-cloud.paused .fluid-cloud-wave span {
+  animation-play-state: paused;
+  opacity: 0.3;
+}
+
+.fluid-cloud.paused .fluid-cloud-icon,
+.fluid-cloud.paused .fluid-cloud-expanded-cover {
+  animation: none;
+}
+
+/* 流体云展开提示 */
+.fluid-cloud-expanded::after {
+  content: '点击进入应用';
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.fluid-cloud-expanded:hover::after {
+  opacity: 1;
+}
+
+.app {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-gray);
+  z-index: 200;
+  overflow: hidden;
+  border-radius: 28px;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s var(--ios-spring), opacity 0.3s var(--ios-smooth);
+  will-change: transform, opacity;
+}
+
+.app.show {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transition: transform 0.5s var(--ios-spring), opacity 0.3s var(--ios-smooth);
+}
+
+.app-body {
+  position: absolute;
+  top: calc(var(--safe-top) + 50px);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--safe-top) - 50px - var(--safe-bottom));
+  background: var(--bg-gray);
+  overflow: hidden;
+  transition: background 0.5s var(--ios-smooth);
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: opacity 0.4s var(--ios-ease), transform 0.4s var(--ios-ease), visibility 0.4s, background 0.5s var(--ios-smooth);
+  background: var(--bg-gray);
+}
+
+.page.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.page.slide-left {
+  transform: translateX(-40%);
+  opacity: 0.4;
+  visibility: visible;
+}
+
+.subpage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  background: var(--bg-gray);
+  overflow-y: auto;
+  transform: translateX(100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s var(--ios-ease), background 0.5s var(--ios-smooth);
+  z-index: 50;
+}
+
+.subpage.show {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.group {
+  background: var(--white);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: background 0.5s var(--ios-smooth), box-shadow 0.5s var(--ios-smooth);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--line-gray);
+  cursor: pointer;
+  transition: background 0.5s var(--ios-smooth), border-color 0.5s var(--ios-smooth);
+}
+
+.item:last-child { border-bottom: none; }
+.item:hover { background: rgba(0,0,0,0.03); }
+.item:active { background: rgba(0,0,0,0.06); }
+
+.item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.item-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.item-text { flex: 1; font-size: 16px; color: var(--text-primary); transition: color 0.5s var(--ios-smooth); }
+.item-desc { font-size: 14px; color: var(--text-gray); text-align: right; margin-right: 8px; transition: color 0.5s var(--ios-smooth); }
+.item-arrow { color: #c7c7cc; font-size: 14px; flex-shrink: 0; transition: color 0.5s var(--ios-smooth); }
+
+.item-switch {
+  width: 50px;
+  height: 30px;
+  background: #e5e5ea;
+  border-radius: 15px;
+  position: relative;
+  transition: all 0.3s var(--ios-bounce);
+  cursor: pointer;
+}
+
+.item-switch.active { background: var(--primary-blue); }
+.item-switch::after {
+  content: '';
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.3s var(--ios-bounce);
+}
+.item-switch.active::after { left: 22px; }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--primary-blue);
+  font-size: 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: color 0.5s var(--ios-smooth);
+}
+
+.about-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0 30px;
+}
+.about-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary-blue), #5856D6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #fff;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.about-icon svg {
+  width: 48px;
+  height: 48px;
+  fill: currentColor;
+}
+  box-shadow: 0 8px 30px rgba(0,122,255,0.3);
+}
+.about-name { font-size: 22px; font-weight: 600; margin-bottom: 4px; color: var(--text-primary); transition: color 0.5s var(--ios-smooth); }
+.about-version { font-size: 15px; color: var(--text-gray); transition: color 0.5s var(--ios-smooth); }
+
+.dialpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px 40px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.dial-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #e5e5ea;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 400;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: all 0.2s var(--ios-bounce);
+  -webkit-touch-callout: none;
+}
+.dial-btn:active { 
+  transform: scale(0.95); 
+  background: #d1d1d6;
+}
+.dial-btn small { font-size: 10px; margin-top: -4px; opacity: 0.6; }
+
+.call-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #34C759;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #fff;
+  margin: 20px auto 0;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+.call-btn:active { transform: scale(0.95); }
+
+.chat-list { display: flex; flex-direction: column; gap: 0; }
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--line-gray);
+  cursor: pointer;
+}
+.chat-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  margin-right: 12px;
+}
+.chat-info { flex: 1; }
+.chat-name { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+.chat-msg { font-size: 14px; color: var(--text-gray); }
+.chat-time { font-size: 13px; color: var(--text-gray); }
+
+.music-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+}
+.music-cover {
+  width: 280px;
+  height: 280px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF2D55, #FF3B30);
+  margin-bottom: 30px;
+  box-shadow: 0 10px 40px rgba(255,45,85,0.3);
+}
+.music-info { text-align: center; margin-bottom: 30px; }
+.music-title { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+.music-singer { font-size: 16px; color: var(--text-gray); }
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--line-gray);
+  border-radius: 3px;
+  margin-bottom: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill { width: 40%; height: 100%; background: var(--primary-blue); border-radius: 3px; }
+.progress-time {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 12px;
+  color: var(--text-gray);
+  margin-bottom: 30px;
+}
+.play-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 300px;
+}
+.play-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+.play-btn:active { transform: scale(0.95); }
+
+#page-camera { padding: 0; background: #000; }
+.camera-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: calc(var(--safe-top) + 10px) calc(var(--safe-right) + 20px) 0 calc(var(--safe-left) + 20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+.camera-top-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s var(--ios-bounce);
+}
+.camera-top-btn.active { color: #FFD60A; }
+
+.camera-viewfinder {
+  width: 100%;
+  height: 100%;
+  background: url('https://www.dmoe.cc/random.php') center/cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.focus-box {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #FFD60A;
+  border-radius: 8px;
+  position: absolute;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.4s var(--ios-bounce);
+  pointer-events: none;
+}
+.focus-box.show { opacity: 1; transform: scale(1); }
+
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px);
+  background-size: 33.33% 33.33%;
+  opacity: 0;
+  transition: opacity 0.3s var(--ios-smooth);
+}
+.grid-lines.show { opacity: 1; }
+
+.camera-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 calc(var(--safe-right) + 20px) calc(var(--safe-bottom) + 20px) calc(var(--safe-left) + 20px);
+  z-index: 100;
+}
+.camera-mode-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+.camera-mode {
+  color: rgba(255,255,255,0.5);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+.camera-mode.active { color: #fff; font-size: 17px; font-weight: 600; transform: scale(1.1); }
+.camera-capture-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.camera-album-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: url('https://www.dmoe.cc/random.php') center/cover;
+  border: 2px solid rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.2s var(--ios-bounce);
+}
+.camera-capture-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #fff;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+.camera-capture-btn-inner { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #000; }
+.camera-switch-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+
+#page-photo { padding: 0; }
+#page-photo > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+#page-photo > div > div { aspect-ratio: 1/1; background: linear-gradient(135deg, #FF9500, #FF3B30); }
+#page-photo > div > div:nth-child(2) { background: linear-gradient(135deg, var(--primary-blue), #5856D6); }
+#page-photo > div > div:nth-child(3) { background: linear-gradient(135deg, #34C759, #007AFF); }
+
+.home-indicator {
+  position: absolute;
+  bottom: calc(var(--safe-bottom) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 3px;
+  z-index: 10001;
+  transition: all 0.4s var(--ios-bounce);
+  cursor: pointer;
+}
+.app.show ~ .home-indicator { background: rgba(0, 0, 0, 0.9); }
+
+.close-btn {
+  position: absolute;
+  right: calc(var(--safe-right) + 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  transition: all 0.2s var(--ios-bounce);
+  z-index: 101;
+}
+.close-btn:active { transform: translateY(-50%) scale(0.9); }
+
+/* 【修复】模糊背景 - 随动画渐变 */
+.control-center-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0);
+  backdrop-filter: blur(0px);
+  opacity: 0;
+  /* 【修复】调整过渡时间为0.3秒 */
+  transition: 
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: backdrop-filter, opacity, background;
+}
+
+.control-center.show .control-center-bg {
+  opacity: 1;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(40px) saturate(1.8);
+}
+
+/* 【修复】控制面板 - 同步渐变 */
+.control-panel {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  width: 100%;
+  max-width: 414px;
+  height: auto;
+  max-height: 70vh; /* 【修复】限制高度，避免太长 */
+  padding: calc(var(--safe-top) + 20px) calc(var(--safe-right) + 20px) 30px calc(var(--safe-left) + 20px);
+  background: rgba(30,30,30,0.6);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border-radius: 0 0 40px 40px;
+  /* 【修复】同步过渡时间 */
+  transition: 
+    transform 0.5s cubic-bezier(0.25, 1, 0.25, 1),
+    backdrop-filter 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, backdrop-filter, background;
+  overflow-y: auto;
+}
+
+.control-center.show .control-panel {
+  transform: translateX(-50%) translateY(0);
+  background: rgba(30,30,30,0.85);
+  backdrop-filter: blur(60px) saturate(2);
+}
+
+.control-center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10003;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+
+.control-center.show {
+  pointer-events: auto;
+}
+
+@media (orientation: landscape) {
+  .control-panel {
+    width: 60%;
+    max-width: 600px;
+    min-width: 500px;
+    padding: calc(var(--safe-top) + 15px) calc(var(--safe-right) + 20px) 30px calc(var(--safe-left) + 20px);
+    border-radius: 0 0 30px 30px;
+    max-height: 85vh;
+  }
+  
+  .control-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .control-sliders { gap: 12px; margin-bottom: 15px; }
+  .control-shortcuts { gap: 12px; }
+  .shortcut-item { padding: 12px; }
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.control-item {
+  aspect-ratio: 1;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+
+.control-item:active { transform: scale(0.9); }
+
+.control-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.3s var(--ios-bounce);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.control-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.control-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
+}
+
+.control-item.active .control-icon {
+  background: #fff !important;
+  color: #333;
+  transform: scale(1.05);
+}
+
+.control-item.inactive .control-icon {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+.control-wifi.active .control-icon { color: #007AFF; }
+.control-bluetooth.active .control-icon { color: #007AFF; }
+.control-airplane.active .control-icon { color: #FF9500; }
+.control-data.active .control-icon { color: #34C759; }
+.control-rotation.active .control-icon { color: #FF3B30; }
+.control-dnd.active .control-icon { color: #AF52DE; }
+.control-flashlight.active .control-icon { color: #FF9500; }
+.control-calculator.active .control-icon { color: #333; }
+
+.control-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 12px 15px;
+}
+
+.slider-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.slider-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.slider-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.slider-fill {
+  height: 100%;
+  background: var(--primary-blue);
+  border-radius: 2px;
+  width: 50%;
+  position: relative;
+}
+
+.slider-thumb {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: var(--primary-blue);
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  cursor: grab;
+}
+
+.control-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.shortcut-item {
+  background: rgba(255,255,255,0.1);
+  border-radius: 18px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s var(--ios-bounce);
+}
+
+.shortcut-item:active { transform: scale(0.98); }
+
+.shortcut-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  overflow: hidden;
+  color: #fff;
+}
+
+.shortcut-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+
+.shortcut-text {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.control-handle {
+  width: 36px;
+  height: 5px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  margin: 0 auto 20px;
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.status-trigger {
+  position: absolute;
+  top: 0;
+  left: var(--safe-left);
+  right: var(--safe-right);
+  height: calc(var(--safe-top) + 60px);
+  z-index: 10002;
+  cursor: pointer;
+}
+
+.control-center.show ~ .status-trigger {
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (orientation: landscape) {
+  .icon-grid {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+  }
+  
+  #desktop { padding-top: calc(var(--safe-top) + 40px); }
+  .lock-time { font-size: 48px; }
+}
+
+/* 开机动画 */
+@keyframes bootPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes bootFadeOut {
+  0% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+#boot-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+</style>
+<base target="_blank">
+</head>
+
+<body>
+<div class="phone">
+
+  <!-- 开机动画 -->
+  <div id="boot-screen" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease;">
+    <div style="font-size: 28px; font-weight: 600; letter-spacing: 3px;"><span style="color: #4A90E2;">SOURCE</span><span style="color: #fff;">UI</span></div>
+    <div style="position: absolute; bottom: 60px; color: rgba(255,255,255,0.3); font-size: 11px;">版本 1.0.25fix</div>
+  </div>
+
+  <!-- 上滑解锁屏幕 -->
+  <div id="lock" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.dmoe.cc/random.php') center/cover; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff;">
+    <div style="font-size: 68px; font-weight: 700; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">10:30</div>
+    <div style="font-size: 17px; font-weight: 600; margin-bottom: 40px; text-shadow: 0 1px 5px rgba(0,0,0,0.3);">周二 2月18日</div>
+    <div style="font-size: 15px; font-weight: 500; opacity: 0.9; margin-bottom: 40px; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">上滑解锁</div>
+    <!-- 滑动区域 -->
+    <div id="swipe-area" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 10000;"></div>
+  </div>
+
+  <div id="status">
+    <div class="time">10:30</div>
+    <div class="info"><svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg> <svg viewBox="0 0 24 24" style="width: 18px; height: 12px; fill: currentColor;"><rect x="2" y="6" width="18" height="12" rx="3" ry="3"/><rect x="20" y="9" width="2" height="6" rx="1" ry="1"/></svg></div>
+  </div>
+
+  <div class="status-trigger" id="status-trigger"></div>
+
+  <!-- 流体云 - 显示当前播放应用 -->
+  <div class="fluid-cloud" id="fluid-cloud">
+    <!-- 收起状态 -->
+    <div class="fluid-cloud-collapsed" id="fluid-cloud-collapsed" onclick="fluidCloudToggleExpand()">
+      <div class="fluid-cloud-icon" id="fluid-cloud-icon"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+      <div class="fluid-cloud-info">
+        <div class="fluid-cloud-title" id="fluid-cloud-title">未在播放</div>
+        <div class="fluid-cloud-subtitle" id="fluid-cloud-subtitle">音乐</div>
+      </div>
+      <div class="fluid-cloud-wave" id="fluid-cloud-wave">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <!-- 展开状态 -->
+    <div class="fluid-cloud-expanded" id="fluid-cloud-expanded" onclick="fluidCloudToggleExpand()">
+      <div class="fluid-cloud-expanded-bg"></div>
+      <div class="fluid-cloud-expanded-content">
+        <div class="fluid-cloud-expanded-cover" id="fluid-cloud-cover" onclick="event.stopPropagation(); fluidCloudOpenApp()"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+        <div class="fluid-cloud-expanded-info" onclick="event.stopPropagation(); fluidCloudOpenApp()">
+          <div class="fluid-cloud-expanded-title" id="fluid-cloud-expanded-title">未在播放</div>
+          <div class="fluid-cloud-expanded-album" id="fluid-cloud-expanded-album">未知专辑</div>
+        </div>
+        <div class="fluid-cloud-expanded-controls">
+            <button class="fluid-cloud-btn" onclick="event.stopPropagation(); fluidCloudPrev()">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;">
+                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+              </svg>
+            </button>
+            <button class="fluid-cloud-btn play-pause" id="fluid-cloud-play-btn" onclick="event.stopPropagation(); fluidCloudTogglePlay()">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;">
+                <path id="fluid-cloud-play-icon" d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+            <button class="fluid-cloud-btn" onclick="event.stopPropagation(); fluidCloudNext()">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;">
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              </svg>
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全屏歌词显示区域 - 移出 app 避免 border-radius 影响 -->
+  <div class="fullscreen-lyrics" id="fullscreen-lyrics" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)); z-index: 10000; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); overflow: hidden; opacity: 0; transform: translateX(100%);" onclick="toggleFullscreenLyrics()">
+    <!-- 上下模糊遮罩 -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 150px; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent); z-index: 1; pointer-events: none;"></div>
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 150px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); z-index: 1; pointer-events: none;"></div>
+    <!-- 顶部信息栏 - 只显示歌名 -->
+    <div class="fullscreen-lyrics-header" style="position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(--safe-top) + 10px) 20px 20px; text-align: center; z-index: 2; transform: translateZ(0);">
+      <div id="fullscreen-song-title" style="color: rgba(255,255,255,0.9); font-size: 17px; font-weight: 600;">歌曲名称</div>
+    </div>
+    
+    <!-- 歌词显示区域 -->
+    <div class="fullscreen-lyrics-container" id="fullscreen-lyrics-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; padding: calc(var(--safe-top) + 80px) 30px 150px; box-sizing: border-box; overflow: hidden; transform: translateZ(0);">
+      <div class="fullscreen-lyrics-content" id="fullscreen-lyrics-content" style="width: 100%; max-width: 800px; text-align: left; transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1); z-index: 1; transform: translateZ(0);">
+        <div class="fullscreen-lyric-line initial" style="color: rgba(255,255,255,0.5); font-size: 24px; line-height: 1.6; margin: 15px 0; font-weight: 400; transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s ease, transform 0.6s ease; transform: translateZ(0); filter: blur(2px);">点击退出全屏歌词</div>
+      </div>
+    </div>
+    
+    <!-- 底部时间显示 -->
+    <div style="position: absolute; bottom: calc(var(--safe-bottom) + 20px); left: 0; width: 100%; text-align: center; z-index: 2; transform: translateZ(0);">
+      <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+        <span id="fullscreen-current-time" style="color: rgba(255,255,255,0.9); font-size: 15px; font-weight: 600;">0:00</span>
+        <span style="color: rgba(255,255,255,0.5); font-size: 15px;">/</span>
+        <span id="fullscreen-duration" style="color: rgba(255,255,255,0.9); font-size: 15px; font-weight: 600;">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-center" id="control-center">
+    <div class="control-center-bg" id="control-center-bg"></div>
+    <div class="control-panel">
+      <div class="control-handle" id="control-handle"></div>
+      <div class="control-grid">
+        <div class="control-item control-wifi active" data-control="wifi">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></div>
+          <div class="control-label">WLAN</div>
+        </div>
+        <div class="control-item control-bluetooth active" data-control="bluetooth">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg></div>
+          <div class="control-label">蓝牙</div>
+        </div>
+        <div class="control-item control-data active" data-control="data">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></div>
+          <div class="control-label">移动数据</div>
+        </div>
+        <div class="control-item control-airplane inactive" data-control="airplane">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg></div>
+          <div class="control-label">飞行模式</div>
+        </div>
+        <div class="control-item control-rotation inactive" data-control="rotation">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+          <div class="control-label">旋转锁定</div>
+        </div>
+        <div class="control-item control-dnd inactive" data-control="dnd">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm6.31-3.1L7.1 5.69C8.45 4.63 10.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z"/></svg></div>
+          <div class="control-label">勿扰模式</div>
+        </div>
+        <div class="control-item control-flashlight inactive" data-control="flashlight">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M6 2h12v3H6zm0 5h12v3H6zm0 5h12v3H6z"/></svg></div>
+          <div class="control-label">手电筒</div>
+        </div>
+        <div class="control-item control-dark-mode inactive" data-control="dark-mode">
+          <div class="control-icon"><svg viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 1.69 1.24 2.79 3.24 2.79 5.54 0 3.87-3.13 7-7 7-.71 0-1.39-.11-2.03-.3C2.6 19.08 6.27 22 10.5 22c5.24 0 9.5-4.25 9.5-9.5S15.74 2 10.5 2c-.51 0-1.01.04-1.5.11V2z"/></svg></div>
+          <div class="control-label">深色模式</div>
+        </div>
+      </div>
+      <div class="control-sliders">
+        <div class="slider-container">
+          <div class="slider-icon"><svg viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg></div>
+          <div class="slider-track" id="brightness-slider">
+            <div class="slider-fill" style="width: 70%;"><div class="slider-thumb"></div></div>
+          </div>
+        </div>
+        <div class="slider-container">
+          <div class="slider-icon"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></div>
+          <div class="slider-track" id="volume-slider">
+            <div class="slider-fill" style="width: 50%;"><div class="slider-thumb"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="control-shortcuts">
+        <div class="shortcut-item" data-action="flashlight">
+          <div class="shortcut-icon"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
+          <div class="shortcut-text">手电筒</div>
+        </div>
+        <div class="shortcut-item" data-action="timer">
+          <div class="shortcut-icon"><svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg></div>
+          <div class="shortcut-text">计时器</div>
+        </div>
+        <div class="shortcut-item" data-action="camera">
+          <div class="shortcut-icon" style="border-radius: 50%; background: rgba(255,255,255,0.3);"><svg viewBox="0 0 24 24"><path d="M12 15.5c1.93 0 3.5-1.57 3.5-3.5s-1.57-3.5-3.5-3.5-3.5 1.57-3.5 3.5 1.57 3.5 3.5 3.5z"/><path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 11.5c-2.49 0-4.5-2.01-4.5-4.5S12.51 6.5 15 6.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/></svg></div>
+          <div class="shortcut-text">相机</div>
+        </div>
+        <div class="shortcut-item" data-action="music">
+          <div class="shortcut-icon" id="control-music-icon"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div class="shortcut-text" id="control-music-text">音乐</div>
+        </div>
+      </div>
+      <div class="control-music-player" id="control-music-player" style="display: none; margin-top: 16px; padding: 16px; background: rgba(255,255,255,0.15); border-radius: 16px; backdrop-filter: blur(20px);">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 40px; height: 40px; background: #FF2D55; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div style="flex: 1; overflow: hidden;">
+            <div style="font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="control-music-title">未在播放</div>
+            <div style="font-size: 12px; color: rgba(255,255,255,0.7);" id="control-music-status">点击播放</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 24px;">
+          <div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff;" id="control-music-prev">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+          </div>
+          <div style="width: 48px; height: 48px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #333;" id="control-music-play">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
+              <path id="control-play-icon" d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff;" id="control-music-next">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="desktop">
+    <div class="icon-grid">
+      <div class="icon-item" data-app="phone"><div class="icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div><div class="icon-label">电话</div></div>
+      <div class="icon-item" data-app="msg"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div><div class="icon-label">信息</div></div>
+      <div class="icon-item" data-app="safari"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div><div class="icon-label">浏览器</div></div>
+      <div class="icon-item" data-app="camera"><div class="icon"><svg viewBox="0 0 24 24"><path d="M9.4 10.5l4.77-8.26C13.47 2.09 12.75 2 12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1zM21.54 9c-.92-2.92-3.15-5.26-6-6.34L11.88 9h9.66zm.27 2h-7.49l.29.5 4.17 7.23c.93-1.33 1.48-2.94 1.48-4.68 0-.98-.16-1.92-.45-2.05zm-9.25 5.47L7.8 8.3C6.32 9.86 5.5 11.85 5.5 14c0 2.4.85 4.6 2.25 6.32l4.77-8.25-.01.4zm-3.17 6.33c.92 2.92 3.15 5.26 6 6.34l2.62-4.33-.06-.1-4.77 8.26.21-.17zM12 22c2.4 0 4.6-.85 6.32-2.25l-3.66-6.35-.06.1-4.77 8.26C10.53 21.91 11.25 22 12 22zm5.73-5.5h7.49l-.29-.5-4.17-7.23c-.93 1.33-1.48 2.94-1.48 4.68 0 .98.16 1.92.45 2.05zm3.17-6.33c1.48-1.56 2.3-3.55 2.3-5.7 0-2.4-.85-4.6-2.25-6.32l-4.77 8.25.01-.4 4.71 8.17zM12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1 4.77-8.26C13.47 2.09 12.75 2 12 2z"/></svg></div><div class="icon-label">相机</div></div>
+      <div class="icon-item" data-app="photo"><div class="icon"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div><div class="icon-label">照片</div></div>
+      <div class="icon-item" data-app="music"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div><div class="icon-label">音乐</div></div>
+      <div class="icon-item" data-app="video"><div class="icon"><svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg></div><div class="icon-label">视频</div></div>
+      <div class="icon-item" data-app="setting"><div class="icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L3.16 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.04.64.09.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div><div class="icon-label">设置</div></div>
+    </div>
+  </div>
+
+  <div id="blur"></div>
+
+  <div id="dock">
+    <div class="dock-item" data-app="phone"><div class="icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div></div>
+    <div class="dock-item" data-app="safari"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div></div>
+    <div class="dock-item" data-app="msg"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div></div>
+    <div class="dock-item" data-app="setting"><div class="icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L3.16 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.04.64.09.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div></div>
+  </div>
+
+  <div class="app" id="app-window">
+    <div class="app-body">
+      <div class="page" id="page-phone">
+        <div class="group">
+          <div class="item" data-subpage="phone-dial">
+            <div class="item-icon" style="background:#34C759"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+            <div class="item-text">拨号键盘</div>
+            <div class="item-arrow">></div>
+          </div>
+          <div class="item" data-subpage="phone-recent">
+            <div class="item-icon" style="background:#FF3B30"><svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg></div>
+            <div class="item-text">最近通话</div>
+            <div class="item-arrow">></div>
+          </div>
+          <div class="item" data-subpage="phone-contact">
+            <div class="item-icon" style="background:var(--primary-blue)"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+            <div class="item-text">联系人</div>
+            <div class="item-arrow">></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-phone-dial">
+        <div class="back-btn" onclick="goBack()">← 电话</div>
+        <div id="dial-display" style="text-align: center; font-size: 28px; margin: 10px 0 5px; letter-spacing: 2px; min-height: 36px; color: #000; font-weight: 300;"></div>
+        <div id="dial-hint" style="text-align: center; font-size: 13px; color: #86868b; margin-bottom: 10px;">添加号码</div>
+        
+        <div class="dialpad" style="gap: 10px; padding: 10px 30px; max-width: 340px;">
+          <div class="dial-btn" data-key="1" style="width: 60px; height: 60px; font-size: 24px;">1<small style="font-size: 8px;"> </small></div>
+          <div class="dial-btn" data-key="2" style="width: 60px; height: 60px; font-size: 24px;">2<small style="font-size: 8px;">ABC</small></div>
+          <div class="dial-btn" data-key="3" style="width: 60px; height: 60px; font-size: 24px;">3<small style="font-size: 8px;">DEF</small></div>
+          <div class="dial-btn" data-key="4" style="width: 60px; height: 60px; font-size: 24px;">4<small style="font-size: 8px;">GHI</small></div>
+          <div class="dial-btn" data-key="5" style="width: 60px; height: 60px; font-size: 24px;">5<small style="font-size: 8px;">JKL</small></div>
+          <div class="dial-btn" data-key="6" style="width: 60px; height: 60px; font-size: 24px;">6<small style="font-size: 8px;">MNO</small></div>
+          <div class="dial-btn" data-key="7" style="width: 60px; height: 60px; font-size: 24px;">7<small style="font-size: 8px;">PQRS</small></div>
+          <div class="dial-btn" data-key="8" style="width: 60px; height: 60px; font-size: 24px;">8<small style="font-size: 8px;">TUV</small></div>
+          <div class="dial-btn" data-key="9" style="width: 60px; height: 60px; font-size: 24px;">9<small style="font-size: 8px;">WXYZ</small></div>
+          <div class="dial-btn" data-key="*" style="width: 60px; height: 60px; font-size: 24px;">*<small style="font-size: 8px;"> </small></div>
+          <div class="dial-btn" data-key="0" style="width: 60px; height: 60px; font-size: 24px;">0<small style="font-size: 8px;">+</small></div>
+          <div class="dial-btn" data-key="#" style="width: 60px; height: 60px; font-size: 24px;">#<small style="font-size: 8px;"> </small></div>
+        </div>
+        
+        <div style="display: flex; align-items: center; justify-content: center; gap: 30px; margin-top: 15px;">
+          <div class="dial-action-btn" id="dial-backspace" style="width: 45px; height: 45px; border-radius: 50%; background: #e5e5ea; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: all 0.2s;">⌫</div>
+          <div class="call-btn" id="call-btn" style="width: 60px; height: 60px; border-radius: 50%; background: #c7c7cc; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; cursor: not-allowed; transition: all 0.3s;"><svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: currentColor;"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+          <div style="width: 45px; height: 45px;"></div>
+        </div>
+        <div id="call-hint" style="text-align: center; margin-top: 10px; font-size: 12px; color: #86868b; min-height: 18px;"></div>
+      </div>
+
+      <div class="subpage" id="subpage-phone-recent">
+        <div class="back-btn" onclick="goBack()">← 电话</div>
+        <div class="group">
+          <div class="chat-item">
+            <div class="chat-avatar"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+            <div class="chat-info"><div class="chat-name">张三</div><div class="chat-msg">移动 13800000000</div></div>
+            <div class="chat-time">今天 10:20</div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-avatar"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+            <div class="chat-info"><div class="chat-name">李四</div><div class="chat-msg">联通 13000000000</div></div>
+            <div class="chat-time">昨天 18:30</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-phone-contact">
+        <div class="back-btn" onclick="goBack()">← 电话</div>
+        <div class="group">
+          <div class="chat-item"><div class="chat-avatar"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div class="chat-info"><div class="chat-name">张三</div></div></div>
+          <div class="chat-item"><div class="chat-avatar"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div class="chat-info"><div class="chat-name">李四</div></div></div>
+        </div>
+      </div>
+
+      <div class="page" id="page-msg">
+        <div class="chat-list">
+          <div class="chat-item" data-subpage="msg-chat">
+            <div class="chat-avatar"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+            <div class="chat-info"><div class="chat-name">张三</div><div class="chat-msg">晚上一起吃饭吗？</div></div>
+            <div class="chat-time">10:20</div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-avatar"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+            <div class="chat-info"><div class="chat-name">公司群</div><div class="chat-msg">明天上午10点开周会</div></div>
+            <div class="chat-time">昨天</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-msg-chat">
+        <div class="back-btn" onclick="goBack()">← 信息</div>
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 10px 0; background: transparent;">
+          <div style="display: flex; align-items: flex-end; gap: 8px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; color: #fff;"><svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+            <div style="background: #e5e5ea; padding: 10px 16px; border-radius: 18px; max-width: 70%;">晚上一起吃饭吗？</div>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 8px; justify-content: flex-end;">
+            <div style="background: var(--primary-blue); color: #fff; padding: 10px 16px; border-radius: 18px; max-width: 70%;">可以啊，去哪吃？</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-safari">
+        <!-- 浏览器地址栏 -->
+        <div class="safari-header">
+          <div class="safari-nav-buttons">
+            <div class="safari-nav-btn" id="safari-back" onclick="safariGoBack()">
+              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </div>
+            <div class="safari-nav-btn" id="safari-forward" onclick="safariGoForward()">
+              <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+          </div>
+          <div class="safari-address-bar">
+            <div class="safari-lock-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <input type="text" id="safari-url-input" placeholder="搜索或输入网址" onkeydown="handleSafariInput(event)">
+            <div class="safari-refresh-btn" onclick="safariReload()">
+              <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            </div>
+          </div>
+          <div class="safari-menu-btn" onclick="showSafariMenu()">
+            <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          </div>
+        </div>
+        
+        <!-- 网页内容区域 -->
+        <div class="safari-content">
+          <iframe id="safari-iframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation"></iframe>
+          <div class="safari-home" id="safari-home">
+            <div class="safari-favorites-title">常用网站</div>
+            <div class="safari-favorites-grid">
+              <div class="safari-favorite-item" onclick="openUrl('https://www.baidu.com')">
+                <div class="safari-favorite-icon" style="background: #2932E1;">百度</div>
+                <div class="safari-favorite-name">百度</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://www.bing.com')">
+                <div class="safari-favorite-icon" style="background: #008373;">必应</div>
+                <div class="safari-favorite-name">必应</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://www.google.com')">
+                <div class="safari-favorite-icon" style="background: #4285F4;">G</div>
+                <div class="safari-favorite-name">Google</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://github.com')">
+                <div class="safari-favorite-icon" style="background: #333;">
+                  <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: #fff;"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </div>
+                <div class="safari-favorite-name">GitHub</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://www.bilibili.com')">
+                <div class="safari-favorite-icon" style="background: #FB7299;">B站</div>
+                <div class="safari-favorite-name">哔哩哔哩</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://www.zhihu.com')">
+                <div class="safari-favorite-icon" style="background: #0084FF;">知乎</div>
+                <div class="safari-favorite-name">知乎</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://www.weibo.com')">
+                <div class="safari-favorite-icon" style="background: #E6162D;">微博</div>
+                <div class="safari-favorite-name">微博</div>
+              </div>
+              <div class="safari-favorite-item" onclick="openUrl('https://www.taobao.com')">
+                <div class="safari-favorite-icon" style="background: #FF5000;">淘宝</div>
+                <div class="safari-favorite-name">淘宝</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 浏览器工具栏 -->
+        <div class="safari-toolbar">
+          <div class="safari-tool-btn" onclick="showBookmarks()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            <span>书签</span>
+          </div>
+          <div class="safari-tool-btn" onclick="showHistory()">
+            <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+            <span>历史</span>
+          </div>
+          <div class="safari-tool-btn" onclick="sharePage()">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+            <span>分享</span>
+          </div>
+          <div class="safari-tool-btn" onclick="addBookmark()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
+            <span>收藏</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 书签页面 -->
+      <div class="subpage" id="subpage-bookmarks">
+        <div class="back-btn" onclick="goBack()">← 浏览器</div>
+        <div class="page-title">书签</div>
+        <div class="group" id="bookmarks-list">
+          <div class="item" onclick="openBookmark('https://www.baidu.com', '百度')">
+            <div class="item-icon" style="background: #2932E1;">百</div>
+            <div class="item-text">百度</div>
+            <div class="item-arrow">></div>
+          </div>
+          <div class="item" onclick="openBookmark('https://www.bing.com', '必应')">
+            <div class="item-icon" style="background: #008373;">必</div>
+            <div class="item-text">必应</div>
+            <div class="item-arrow">></div>
+          </div>
+          <div class="item" onclick="openBookmark('https://www.google.com', 'Google')">
+            <div class="item-icon" style="background: #4285F4;">G</div>
+            <div class="item-text">Google</div>
+            <div class="item-arrow">></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 历史记录页面 -->
+      <div class="subpage" id="subpage-history">
+        <div class="back-btn" onclick="goBack()">← 浏览器</div>
+        <div class="page-title">历史记录</div>
+        <div class="group" id="history-list">
+          <div class="item" style="justify-content: center; color: var(--text-gray);">
+            <div class="item-text">暂无历史记录</div>
+          </div>
+        </div>
+        <div class="group" style="margin-top: 20px;">
+          <div class="item" onclick="clearHistory()">
+            <div class="item-text" style="color: #FF3B30; text-align: center;">清除历史记录</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-camera">
+        <div class="camera-top-bar">
+          <div class="camera-top-btn" id="flash-btn"><svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
+          <div class="camera-top-btn" id="live-btn">◯</div>
+          <div class="camera-top-btn" id="night-btn"><svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M9 2c-1.05 0-2.05.16-3 .46 1.69 1.24 2.79 3.24 2.79 5.54 0 3.87-3.13 7-7 7-.71 0-1.39-.11-2.03-.3C2.6 19.08 6.27 22 10.5 22c5.24 0 9.5-4.25 9.5-9.5S15.74 2 10.5 2c-.51 0-1.01.04-1.5.11V2z"/></svg></div>
+          <div class="camera-top-btn" id="grid-btn">▦</div>
+        </div>
+        <div class="camera-viewfinder" id="viewfinder" style="width: 100%; height: calc(100% - 120px);">
+          <div class="focus-box" id="focus-box"></div>
+          <div class="grid-lines" id="grid-lines"></div>
+        </div>
+        <div class="camera-bottom-bar">
+          <div class="camera-mode-slider">
+            <div class="camera-mode">延时摄影</div>
+            <div class="camera-mode">慢动作</div>
+            <div class="camera-mode active">照片</div>
+            <div class="camera-mode">视频</div>
+            <div class="camera-mode">人像</div>
+          </div>
+          <div class="camera-capture-area">
+            <div class="camera-album-btn"></div>
+            <div class="camera-capture-btn" id="capture-btn"><div class="camera-capture-btn-inner"></div></div>
+            <div class="camera-switch-btn" id="switch-btn">⟳</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-photo">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-gray); font-size: 16px;">暂无照片</div>
+      </div>
+
+      <div class="page" id="page-music">
+        <div class="group">
+          <div class="item" data-subpage="music-player"><div class="item-icon" style="background:#FF2D55"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div><div class="item-text">正在播放</div><div class="item-arrow">></div></div>
+          <div class="item" id="music-upload-btn"><div class="item-icon" style="background:#34C759"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></div><div class="item-text">导入音乐</div><div class="item-arrow">></div></div>
+          <div class="item"><div class="item-icon" style="background:var(--primary-blue)"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><div class="item-text">我的收藏</div><div class="item-arrow">></div></div>
+        </div>
+        <div class="group" id="music-playlist">
+          <div class="item" style="justify-content: center; color: var(--text-gray);"><div class="item-text">暂无音乐，请点击"导入音乐"导入</div></div>
+        </div>
+        <input type="file" id="music-file-input" accept=".mp3,.wav,.flac,audio/mpeg,audio/wav,audio/flac" style="display: none;" multiple>
+      </div>
+
+      <div class="subpage" id="subpage-music-player">
+        <div class="back-btn" onclick="goBack()">← 音乐</div>
+        <div class="music-player" id="music-player" style="padding: 20px; gap: 15px;">
+          <div class="music-cover" id="music-cover" style="width: 180px; height: 180px;"></div>
+          <div class="music-info" id="music-info" style="margin-bottom: 0; display: flex; flex-direction: column; gap: 5px;">
+            <div class="music-title" id="music-title" style="font-size: 16px; font-weight: 500; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 20px; max-width: 15em;">歌曲名称</div>
+            <div class="music-singer" id="music-singer" style="font-size: 14px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 18px;">未知艺术家</div>
+          </div>
+          <!-- 歌词显示区域 -->
+          <div class="music-lyrics-container" id="music-lyrics-container" style="width: 100%; height: 64px; overflow: hidden; position: relative; cursor: pointer; padding: 0;" onclick="toggleFullscreenLyrics()">
+            <div class="music-lyrics" id="music-lyrics" style="display: flex; flex-direction: column; height: 100%; justify-content: center; align-items: center; transition: transform 0.3s ease; transform: translateZ(0);">
+              <div class="current-lyric-line" style="color: var(--primary-blue); font-size: 16px; line-height: 20px; height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1); transform: translateZ(0); text-align: center;">暂无歌词，点击导入歌词</div>
+              <div class="next-lyric-line" style="color: var(--text-gray); font-size: 14px; line-height: 18px; height: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 6px; transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1); transform: translateZ(0); opacity: 0.6; text-align: center;">&nbsp;</div>
+            </div>
+          </div>
+          <!-- 导入歌词按钮 -->
+          <div class="music-lyrics-import" id="music-lyrics-import" style="display: flex; gap: 10px;">
+            <div class="item" id="music-import-lrc-btn" style="flex: 1; cursor: pointer; padding: 8px 16px;">
+              <div class="item-icon" style="background:#5856D6; width: 32px; height: 32px; font-size: 14px;"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+              <div class="item-text" style="font-size: 14px;">导入歌词</div>
+              <div class="item-arrow">></div>
+            </div>
+          </div>
+          <div style="width: 100%;" id="music-progress-container">
+            <div class="progress-bar" id="music-progress-bar" style="height: 3px;"><div class="progress-fill" id="music-progress-fill"></div></div>
+            <div class="progress-time" style="margin-top: 6px;"><span id="music-current-time">0:00</span><span id="music-duration">0:00</span></div>
+          </div>
+          <div class="play-controls" id="music-controls" style="margin-top: 5px;">
+            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-color);" id="music-prev">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
+                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+              </svg>
+            </div>
+            <div class="play-btn" id="music-play-btn" style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: var(--primary-blue); border-radius: 50%; color: #fff; cursor: pointer;">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 28px; height: 28px;">
+                <path id="music-play-icon" d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-color);" id="music-next">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <audio id="music-audio" style="display: none;"></audio>
+        <input type="file" id="music-lrc-input" accept=".lrc" style="display: none;">
+      </div>
+
+      <div class="page" id="page-video">
+        <div class="group">
+          <div class="item"><div class="item-icon" style="background:#FF9500"><svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg></div><div class="item-text">我的视频</div><div class="item-arrow">></div></div>
+          <div class="item"><div class="item-icon" style="background:var(--primary-blue)"><svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg></div><div class="item-text">最近播放</div><div class="item-arrow">></div></div>
+        </div>
+      </div>
+
+      <div class="page" id="page-setting">
+        <div class="group">
+          <div class="item" data-subpage="setting-network"><div class="item-icon" style="background:var(--primary-blue)"><svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></div><div class="item-text">无线局域网</div><div class="item-desc"></div><div class="item-arrow">></div></div>
+          <div class="item" data-subpage="setting-bluetooth"><div class="item-icon" style="background:#007AFF"><svg viewBox="0 0 24 24"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg></div><div class="item-text">蓝牙</div><div class="item-desc"></div><div class="item-arrow">></div></div>
+          <div class="item" data-subpage="setting-cellular"><div class="item-icon" style="background:#34C759"><svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></div><div class="item-text">蜂窝网络</div><div class="item-arrow">></div></div>
+        </div>
+        <div class="group">
+          <div class="item" data-subpage="setting-notification"><div class="item-icon" style="background:#FF3B30"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div class="item-text">通知</div><div class="item-arrow">></div></div>
+          <div class="item" data-subpage="setting-sound"><div class="item-icon" style="background:#FF9500"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></div><div class="item-text">声音与触感</div><div class="item-arrow">></div></div>
+          <div class="item" data-subpage="setting-display"><div class="item-icon" style="background:#007AFF"><svg viewBox="0 0 24 24"><path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg></div><div class="item-text">显示与亮度</div><div class="item-arrow">></div></div>
+        </div>
+        <div class="group">
+          <div class="item" data-subpage="setting-general"><div class="item-icon" style="background:#86868b"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L3.16 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.04.64.09.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div><div class="item-text">通用</div><div class="item-arrow">></div></div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-network">
+        <div class="back-btn" onclick="goBack()">← 设置</div>
+        <div class="group"><div class="item"><div class="item-text">无线局域网</div><div class="item-switch active"></div></div></div>
+        <div class="group">
+          <div class="item"><div class="item-text">测试WiFi 1</div><div class="item-desc"></div><div class="item-arrow">></div></div>
+          <div class="item"><div class="item-text">测试WiFi 2</div><div class="item-arrow">></div></div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-bluetooth">
+        <div class="back-btn" onclick="goBack()">← 设置</div>
+        <div class="group"><div class="item"><div class="item-text">蓝牙</div><div class="item-switch active"></div></div></div>
+        <div class="group"><div class="item"><div class="item-text">Source 耳机</div><div class="item-desc"></div><div class="item-arrow">></div></div></div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-notification">
+        <div class="back-btn" onclick="goBack()">← 设置</div>
+        <div class="group"><div class="item"><div class="item-text">允许通知</div><div class="item-switch active"></div></div></div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-general">
+        <div class="back-btn" onclick="goBack()">← 设置</div>
+        <div class="group">
+          <div class="item" data-subpage="setting-about"><div class="item-text">关于本机</div><div class="item-arrow">></div></div>
+          <div class="item" data-subpage="setting-software-update"><div class="item-text">软件更新</div><div class="item-desc">已是最新版本</div><div class="item-arrow">></div></div>
+          <div class="item"><div class="item-text">存储空间</div><div class="item-desc">20.3GB/512GB</div><div class="item-arrow">></div></div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-about">
+        <div class="back-btn" onclick="goBack()">← 通用</div>
+        <div class="about-header"><div class="about-icon"><svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></div><div class="about-name">Source UI</div><div class="about-version">版本 1.0.25fix</div></div>
+        <div class="group">
+          <div class="item"><div class="item-text">名称</div><div class="item-desc">Source UI</div></div>
+          <div class="item"><div class="item-text">软件版本</div><div class="item-desc">Source UI 1.0.25fix</div></div>
+          <div class="item"><div class="item-text">型号名称</div><div class="item-desc">Source Engine Simulator ver 1.0</div></div>
+          <div class="item"><div class="item-text">型号号码</div><div class="item-desc">SUI-2026</div></div>
+          <div class="item"><div class="item-text">序列号</div><div class="item-desc">SUI20260218001</div></div>
+          <div class="item"><div class="item-text">处理器</div><div class="item-desc">Source A1</div></div>
+          <div class="item"><div class="item-text">内存</div><div class="item-desc">16GB</div></div>
+          <div class="item"><div class="item-text">总容量</div><div class="item-desc">512GB</div></div>
+        </div>
+        <div class="group"><div class="item"><div class="item-text">版权信息</div><div class="item-desc">© 2026 ThinkReally</div></div></div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-software-update">
+        <div class="back-btn" onclick="goBack()">← 通用</div>
+        <div class="about-header"><div class="about-icon"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></div><div class="about-name">软件更新</div><div class="about-version">已安装最新版本</div></div>
+        <div class="group">
+          <div class="item"><div class="item-text">当前版本</div><div class="item-desc">1.0.26</div></div>
+          <div class="item"><div class="item-text">更新状态</div><div class="item-desc">已是最新版本</div></div>
+          <div class="item"><div class="item-text">代码总行数</div><div class="item-desc">5273行</div></div>
+        </div>
+        <div class="group">
+          <div class="item" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 20px;">
+            <div class="item-text" style="font-weight: 600; font-size: 15px;">版本 1.0.26 更新内容</div>
+            <div style="width: 100%; text-align: left; font-size: 13px; line-height: 1.8; color: var(--text-gray);">
+              <div style="margin-bottom: 8px;"><b>1. 拨号页面修复</b> (行2016-2020)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">移除transitionend事件监听器，防止拨号号码被过早重置</div>
+              
+              <div style="margin-bottom: 8px;"><b>2. 控制中心模糊优化</b> (行467-491)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">统一过渡时间为0.3秒，修复cubic-bezier语法错误，移除opacity动画干扰</div>
+              
+              <div style="margin-bottom: 8px;"><b>3. 深色模式功能</b> (行36-138, 行2299-2373)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">使用CSS变量实现主题切换，localStorage保存状态，控制中心/设置双开关同步</div>
+              
+              <div style="margin-bottom: 8px;"><b>4. 浏览器输入框修复</b> (行108-111)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">添加深色模式样式，修复输入框颜色刺眼问题</div>
+              
+              <div style="margin-bottom: 8px;"><b>5. 信息页面修复</b> (行108-111)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">聊天页面背景设为透明，消除白线</div>
+              
+              <div style="margin-bottom: 8px;"><b>6. 相机页面优化</b> (行1505-1530)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">viewfinder调整为全屏显示</div>
+              
+              <div style="margin-bottom: 8px;"><b>7. 控制中心图标更新</b> (行1319-1322)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">勿扰模式图标从🌙改为🔕，计算器改为深色模式开关</div>
+              
+              <div style="margin-bottom: 8px;"><b>8. 亮度条功能</b> (行1631-1643)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">静态显示改为可拖动进度条，颜色改为蓝色</div>
+              
+              <div style="margin-bottom: 8px;"><b>9. 解锁逻辑重写</b> (行1659-1730)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">使用事件监听器替代内联样式，添加上滑手势识别</div>
+              
+              <div style="margin-bottom: 8px;"><b>10. 壁纸缩放修复</b> (行326-330)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">修复z-index层级，确保缩放效果可见</div>
+              
+              <div style="margin-bottom: 8px;"><b>11. Dock栏动画</b> (行428-435)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">应用打开时下移淡出，关闭时回弹动画</div>
+              
+              <div style="margin-bottom: 8px;"><b>12. 应用动画优化</b> (行490-514)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">调整过渡时间为0.5s/0.3s，优化打开关闭动画流畅度</div>
+              
+              <div style="margin-bottom: 8px;"><b>13. 全屏歌词滚动修复</b> (行3093-3142)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;">使用offsetTop计算滚动位置，当前歌词显示在屏幕中央偏上位置</div>
+
+              <div style="margin-bottom: 8px;"><b>14. 控制中心调整全局</b> (行3093-3142)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;"> </div>
+
+              <div style="margin-bottom: 8px;"><b>15. 写不动了你们自己体验吧</b> (行3093-3142)</div>
+              <div style="padding-left: 12px; margin-bottom: 12px;"> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subpage" id="subpage-setting-display">
+        <div class="back-btn" onclick="goBack()">← 设置</div>
+        <div class="group">
+          <div class="item">
+            <div class="item-text">亮度</div>
+            <div class="item-desc"><span id="brightness-value">70</span>%</div>
+          </div>
+          <div class="item" style="padding: 10px 20px;">
+            <div class="slider-track" id="setting-brightness-slider">
+              <div class="slider-fill" style="width: 70%;"><div class="slider-thumb"></div></div>
+            </div>
+          </div>
+          <div class="item" id="dark-mode-setting"><div class="item-text">深色模式</div><div class="item-switch"></div></div>
+          <div class="item" id="gpu-acceleration-setting"><div class="item-text">启用GPU加速渲染</div><div class="item-switch active"></div></div>
+          <div style="padding: 8px 20px; font-size: 12px; color: var(--text-gray); line-height: 1.4;">
+            开启后可缓解卡顿，但可能增加电量消耗
+          </div>
+          <div class="item" id="advanced-materials-setting"><div class="item-text">高级材质</div><div class="item-switch active"></div></div>
+          <div style="padding: 8px 20px; font-size: 12px; color: var(--text-gray); line-height: 1.4;">
+            开启后使用模糊特效和高级视觉效果，关闭可提升性能
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="home-indicator" id="home-indicator"></div>
+
+</div>
+
+<script>
+// 全局变量
+let lock, desktop;
+
+// 等待DOM加载完成
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM加载完成');
+  
+  // 初始化GPU硬件加速设置
+  const gpuAccelerationEnabled = localStorage.getItem('gpuAcceleration') !== 'false';
+  if (gpuAccelerationEnabled) {
+    document.body.classList.add('gpu-accelerated');
+    console.log('[GPU] Hardware acceleration enabled');
+  } else {
+    console.log('[GPU] Hardware acceleration disabled');
+  }
+  
+  // 初始化高级材质设置
+  const advancedMaterialsEnabled = localStorage.getItem('advancedMaterials') !== 'false';
+  if (advancedMaterialsEnabled) {
+    document.body.classList.add('advanced-materials');
+    console.log('[Materials] Advanced materials enabled');
+  } else {
+    console.log('[Materials] Advanced materials disabled');
+  }
+  
+  // 开机动画控制
+  const bootScreen = document.getElementById('boot-screen');
+  if (bootScreen) {
+    // 4秒后隐藏开机动画
+    setTimeout(function() {
+      bootScreen.classList.add('hidden');
+      console.log('开机动画结束');
+    }, 4000);
+  }
+  
+  // 获取元素
+  lock = document.getElementById('lock');
+  desktop = document.getElementById('desktop');
+  const swipeArea = document.getElementById('swipe-area');
+  
+  console.log('获取元素:', lock, desktop, swipeArea);
+  
+  // 滑动变量
+  let startY = 0;
+  let isSwiping = false;
+  
+  // 解锁函数
+  function unlock() {
+    console.log('解锁函数被调用');
+    
+    if (lock && desktop) {
+      console.log('开始解锁过程');
+      
+      // 添加解锁动画
+      lock.style.transition = 'all 0.5s ease';
+      lock.style.opacity = '0';
+      lock.style.transform = 'translateY(-50px) scale(0.92)';
+      
+      // 显示桌面
+      desktop.classList.add('show');
+      
+      // 1秒后隐藏锁定屏幕
+      setTimeout(() => {
+        lock.style.display = 'none';
+        console.log('解锁完成');
+      }, 1000);
+    }
+  }
+  
+  // 鼠标事件
+  if (swipeArea) {
+    console.log('添加鼠标事件监听器');
+    
+    swipeArea.addEventListener('mousedown', function(e) {
+      console.log('鼠标按下:', e.clientY);
+      startY = e.clientY;
+      isSwiping = true;
+    });
+    
+    swipeArea.addEventListener('mouseup', function(e) {
+      console.log('鼠标释放:', e.clientY);
+      if (isSwiping) {
+        const diffY = startY - e.clientY;
+        console.log('计算滑动距离:', diffY);
+        if (diffY > 50) {
+          console.log('滑动距离满足条件，解锁');
+          unlock();
+        }
+        isSwiping = false;
+      }
+    });
+    
+    // 触摸事件
+    swipeArea.addEventListener('touchstart', function(e) {
+      console.log('触摸开始:', e.touches[0].clientY);
+      startY = e.touches[0].clientY;
+      isSwiping = true;
+    });
+    
+    swipeArea.addEventListener('touchend', function(e) {
+      console.log('触摸结束:', e.changedTouches[0].clientY);
+      if (isSwiping) {
+        const diffY = startY - e.changedTouches[0].clientY;
+        console.log('计算滑动距离:', diffY);
+        if (diffY > 50) {
+          console.log('滑动距离满足条件，解锁');
+          unlock();
+        }
+        isSwiping = false;
+      }
+    });
+  }
+  
+  // 为了测试，添加一个点击解锁功能（在swipe-area上）
+  if (swipeArea) {
+    swipeArea.addEventListener('click', function() {
+      console.log('swipe-area被点击，直接解锁');
+      unlock();
+    });
+  }
+
+// 定义其他变量
+const app = document.getElementById('app-window');
+const blur = document.getElementById('blur');
+const status = document.getElementById('status');
+const pages = document.querySelectorAll('.page');
+const subpages = document.querySelectorAll('.subpage');
+const homeIndicator = document.getElementById('home-indicator');
+const controlCenter = document.getElementById('control-center');
+const statusTrigger = document.getElementById('status-trigger');
+const controlCenterBg = document.getElementById('control-center-bg');
+
+let currentIcon = null;
+let currentPage = null;
+let controlOpen = false;
+
+let lockStartY = 0, lockStartX = 0, isLockDragging = false;
+
+// 确保handleLockStart和handleLockEnd函数在全局范围内可用
+window.handleLockStart = function(y, x) {
+  console.log('handleLockStart被调用', y, x);
+  if (desktop.classList.contains('show')) return;
+  lockStartY = y; lockStartX = x; isLockDragging = true;
+  console.log('isLockDragging设置为true');
+};
+
+window.handleLockEnd = function(y, x) {
+  console.log('handleLockEnd被调用', y, x);
+  if (!isLockDragging) return;
+  isLockDragging = false;
+  const diffY = lockStartY - y;
+  const diffX = Math.abs(lockStartX - x);
+  console.log('计算滑动距离:', diffY, diffX);
+  // 允许向上滑动解锁
+  if (diffY > 80 && diffX < 60) {
+    console.log('滑动距离满足条件，调用window.unlockScreen');
+    window.unlockScreen();
+  }
+};
+
+// 完全重写解锁逻辑，使用最基本的JavaScript代码
+window.unlockScreen = function() {
+  // 直接获取元素，不依赖于外部变量
+  const lockElement = document.getElementById('lock');
+  const desktopElement = document.getElementById('desktop');
+  
+  console.log('解锁函数被调用');
+  console.log('lock元素:', lockElement);
+  console.log('desktop元素:', desktopElement);
+  
+  if (lockElement && desktopElement) {
+    console.log('开始解锁过程');
+    
+    // 添加解锁动画类
+    lockElement.classList.add('unlocking');
+    
+    // 显示桌面
+    desktopElement.classList.add('show');
+    
+    // 600毫秒后隐藏锁定屏幕
+    setTimeout(() => {
+      lockElement.style.display = 'none';
+      console.log('解锁完成');
+    }, 600);
+  } else {
+    console.log('无法找到lock或desktop元素');
+  }
+}
+
+function updateTime() {
+  const t = new Date();
+  const h = String(t.getHours()).padStart(2, '0');
+  const m = String(t.getMinutes()).padStart(2, '0');
+  const timeText = h + ':' + m;
+  const lockTime = document.querySelector('.lock-time');
+  const statusTime = document.querySelector('#status .time');
+  if (lockTime) lockTime.innerText = timeText;
+  if (statusTime) statusTime.innerText = timeText;
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+function resetAllPages() {
+  pages.forEach(page => page.classList.remove('show', 'slide-left'));
+  // 重置所有子页面
+  subpages.forEach(subpage => subpage.classList.remove('show'));
+  currentPage = null;
+  console.log('[FluidCloud] resetAllPages called, currentPage reset to null');
+}
+
+function openApp(appName, clickIcon) {
+  if (app.classList.contains('show')) {
+    closeApp();
+    setTimeout(() => doOpenApp(appName, clickIcon), 300);
+  } else {
+    doOpenApp(appName, clickIcon);
+  }
+}
+
+function doOpenApp(appName, clickIcon) {
+  console.log('[App] doOpenApp called:', appName);
+  resetAllPages();
+  currentIcon = clickIcon;
+  const rect = clickIcon.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  app.style.transformOrigin = cx + 'px ' + cy + 'px';
+  
+  const targetPage = document.getElementById('page-' + appName);
+  console.log('[App] targetPage:', targetPage);
+  if (!targetPage) {
+    console.error('[App] Target page not found for:', appName);
+    return;
+  }
+
+  currentPage = targetPage;
+  currentPage.classList.add('show');
+  console.log('[App] Showed page:', appName);
+
+  // 添加壁纸缩放效果和应用显示
+  desktop.classList.add('app-open');
+  blur.classList.add('app-open');
+  status.classList.add('hidden');
+  blur.classList.add('active');
+  
+  // 应用从图标位置缩放的动画
+  app.style.transform = 'scale(0)';
+  app.style.opacity = '0';
+  app.classList.add('show');
+  
+  // 强制重绘
+  app.offsetHeight;
+  
+  // 开始缩放动画
+  app.style.transition = 'transform 0.5s var(--ios-spring), opacity 0.3s var(--ios-smooth)';
+  app.style.transform = 'scale(1)';
+  app.style.opacity = '1';
+  
+  // 如果打开的是音乐应用，隐藏流体云
+  if (appName === 'music' && fluidCloud) {
+    fluidCloud.classList.add('in-music-app');
+    console.log('[App] Added in-music-app class to fluid cloud');
+  }
+}
+
+document.querySelectorAll('.icon-item[data-app]').forEach(icon => {
+  icon.addEventListener('click', function() {
+    openApp(this.getAttribute('data-app'), this);
+  });
+});
+
+document.querySelectorAll('.dock-item[data-app]').forEach(icon => {
+  icon.addEventListener('click', function() {
+    openApp(this.getAttribute('data-app'), this);
+  });
+});
+
+document.querySelectorAll('[data-subpage]').forEach(item => {
+  item.addEventListener('click', function() {
+    const subpageId = this.getAttribute('data-subpage');
+    const targetSubpage = document.getElementById('subpage-' + subpageId);
+    if (!targetSubpage || !currentPage) return;
+    currentPage.classList.add('slide-left');
+    void targetSubpage.offsetWidth;
+    targetSubpage.classList.add('show');
+  });
+});
+
+function goBack() {
+  if (!currentPage) return;
+  subpages.forEach(subpage => subpage.classList.remove('show'));
+  currentPage.classList.remove('slide-left');
+}
+window.goBack = goBack;
+
+let appStartY = 0, appStartX = 0, isAppDragging = false;
+
+function handleAppStart(y, x) {
+  if (!app.classList.contains('show')) return;
+  appStartY = y; appStartX = x; isAppDragging = true;
+}
+
+function handleAppEnd(y, x) {
+  if (!isAppDragging) return;
+  isAppDragging = false;
+  if (!app.classList.contains('show')) return;
+  const diffY = appStartY - y;
+  const diffX = Math.abs(appStartX - x);
+  if (diffY > 100 && diffX < 50) closeApp();
+}
+
+function closeApp() {
+  console.log('[App] closeApp called, currentPage:', currentPage ? currentPage.id : null);
+  
+  // 如果全屏歌词正在显示，先隐藏它，等待动画完成后再关闭应用
+  if (isFullscreenLyrics && fullscreenLyrics) {
+    console.log('[App] Hiding fullscreen lyrics before closing app');
+    toggleFullscreenLyrics();
+    // 等待全屏歌词退出动画完成（300ms）后再执行应用关闭
+    setTimeout(() => {
+      performCloseApp();
+    }, 350);
+    return;
+  }
+  
+  // 如果没有全屏歌词，直接关闭应用
+  performCloseApp();
+}
+
+// 实际执行应用关闭的逻辑
+function performCloseApp() {
+  // 判断当前是否是音乐应用且正在播放
+  const isMusicApp = currentPage && currentPage.id === 'page-music';
+  const shouldReturnToFluidCloud = isMusicApp && musicPlaylist.length > 0 && currentMusicIndex >= 0;
+  console.log('[App] isMusicApp:', isMusicApp, 'shouldReturnToFluidCloud:', shouldReturnToFluidCloud);
+  
+  let cx, cy;
+  
+  if (shouldReturnToFluidCloud) {
+    // 如果是音乐应用，缩回到流体云位置（屏幕顶部中央）
+    cx = window.innerWidth / 2;
+    cy = 60; // 流体云大致位置
+    console.log('[App] Closing to fluid cloud position:', cx, cy);
+    
+    // 恢复流体云显示
+    if (fluidCloud) {
+      fluidCloud.classList.remove('in-music-app');
+      console.log('[App] Removed in-music-app class from fluid cloud');
+    }
+    
+    // 给退出的应用界面添加模糊效果，同时恢复背景
+    app.style.filter = 'blur(10px)';
+    blur.classList.remove('active');
+    desktop.classList.remove('app-open');
+    blur.classList.remove('app-open');
+    status.classList.remove('hidden');
+    
+    // 执行缩回动画
+    app.style.transformOrigin = cx + 'px ' + cy + 'px';
+    app.style.transition = 'transform 0.4s var(--ios-spring), opacity 0.3s var(--ios-smooth), filter 0.3s var(--ios-smooth)';
+    app.style.transform = 'scale(0)';
+    app.style.opacity = '0';
+    
+    setTimeout(() => {
+      app.classList.remove('show');
+      app.style.filter = '';
+      resetAllPages();
+      currentIcon = null;
+      console.log('[App] App closed, returned to fluid cloud');
+    }, 350);
+  } else {
+    // 普通关闭逻辑
+    cx = window.innerWidth / 2;
+    cy = window.innerHeight / 2;
+    if (currentIcon) {
+      const rect = currentIcon.getBoundingClientRect();
+      cx = rect.left + rect.width / 2;
+      cy = rect.top + rect.height / 2;
+    }
+    console.log('[App] Normal close to icon position:', cx, cy);
+    
+    // 立即恢复模糊和缩放效果
+    blur.classList.remove('active');
+    desktop.classList.remove('app-open');
+    blur.classList.remove('app-open');
+    status.classList.remove('hidden');
+    
+    // 关闭应用时恢复流体云显示（如果正在播放音乐）
+    if (fluidCloud) {
+      fluidCloud.classList.remove('in-music-app');
+    }
+    
+    // 执行缩回动画
+    app.style.transformOrigin = cx + 'px ' + cy + 'px';
+    app.style.transition = 'transform 0.4s var(--ios-spring), opacity 0.3s var(--ios-smooth)';
+    app.style.transform = 'scale(0)';
+    app.style.opacity = '0';
+    
+    setTimeout(() => {
+      app.classList.remove('show');
+      resetAllPages();
+      currentIcon = null;
+      console.log('[App] App closed normally');
+    }, 350);
+  }
+}
+window.closeApp = closeApp;
+window.performCloseApp = performCloseApp;
+
+document.addEventListener('touchstart', e => {
+  if (app.classList.contains('show')) {
+    handleAppStart(e.touches[0].clientY, e.touches[0].clientX);
+  }
+}, { passive: true });
+
+document.addEventListener('touchend', e => {
+  handleAppEnd(e.changedTouches[0].clientY, e.changedTouches[0].clientX);
+});
+
+document.addEventListener('mousedown', e => {
+  if (app.classList.contains('show')) {
+    handleAppStart(e.clientY, e.clientX);
+  }
+});
+
+document.addEventListener('mouseup', e => {
+  handleAppEnd(e.clientY, e.clientX);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && app.classList.contains('show')) {
+    closeApp();
+  }
+});
+
+if (homeIndicator) {
+  homeIndicator.addEventListener('click', () => {
+    if (app.classList.contains('show')) closeApp();
+  });
+}
+
+document.querySelectorAll('.item-switch').forEach(switchEl => {
+  switchEl.addEventListener('click', (e) => {
+    e.stopPropagation();
+    switchEl.classList.toggle('active');
+  });
+});
+
+const viewfinder = document.getElementById('viewfinder');
+const focusBox = document.getElementById('focus-box');
+const gridBtn = document.getElementById('grid-btn');
+const gridLines = document.getElementById('grid-lines');
+const captureBtn = document.getElementById('capture-btn');
+
+if (viewfinder) {
+  viewfinder.addEventListener('click', (e) => {
+    const rect = viewfinder.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if (focusBox) {
+      focusBox.style.left = (x - 40) + 'px';
+      focusBox.style.top = (y - 40) + 'px';
+      focusBox.classList.remove('show');
+      void focusBox.offsetWidth;
+      focusBox.classList.add('show');
+      setTimeout(() => focusBox.classList.remove('show'), 2000);
+    }
+  });
+}
+
+if (gridBtn && gridLines) {
+  gridBtn.addEventListener('click', () => {
+    gridBtn.classList.toggle('active');
+    gridLines.classList.toggle('show');
+  });
+}
+
+if (captureBtn && viewfinder) {
+  captureBtn.addEventListener('click', () => {
+    viewfinder.style.opacity = '0';
+    setTimeout(() => viewfinder.style.opacity = '1', 100);
+  });
+}
+
+document.querySelectorAll('.camera-mode').forEach(mode => {
+  mode.addEventListener('click', () => {
+    document.querySelectorAll('.camera-mode').forEach(m => m.classList.remove('active'));
+    mode.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.camera-top-btn').forEach(btn => {
+  if (btn.id !== 'grid-btn') {
+    btn.addEventListener('click', () => btn.classList.toggle('active'));
+  }
+});
+
+let touchStartY = 0;
+let touchStartX = 0;
+let isTouching = false;
+
+document.addEventListener('touchstart', (e) => {
+  if (controlOpen) return; // 如果控制中心已打开，则不响应
+  const touch = e.touches[0];
+  if (touch.clientY < 120) {
+    touchStartY = touch.clientY;
+    touchStartX = touch.clientX;
+    isTouching = true;
+  }
+}, { passive: false });
+
+document.addEventListener('touchmove', (e) => {
+  if (!isTouching || controlOpen) return;
+  const touch = e.touches[0];
+  const deltaY = touch.clientY - touchStartY;
+  const deltaX = Math.abs(touch.clientX - touchStartX);
+  
+  if (deltaY > 30 && deltaX < 50) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+  if (!isTouching) return;
+  const touch = e.changedTouches[0];
+  const deltaY = touch.clientY - touchStartY;
+  const deltaX = Math.abs(touch.clientX - touchStartX);
+  
+  if (deltaY > 80 && deltaX < 100 && !controlOpen) {
+    openControlCenter();
+  }
+  isTouching = false;
+}, { passive: true });
+
+const controlHandle = document.getElementById('control-handle');
+
+function openControlCenter() {
+  controlCenter.classList.add('show');
+  controlOpen = true;
+  // 打开控制中心时隐藏流体云
+  if (fluidCloud) {
+    fluidCloud.classList.add('in-control-center');
+  }
+}
+
+function closeControlCenter() {
+  controlCenter.classList.remove('show');
+  controlOpen = false;
+  // 关闭控制中心时恢复流体云显示（如果正在播放音乐）
+  if (fluidCloud && musicPlaylist.length > 0 && currentMusicIndex >= 0) {
+    fluidCloud.classList.remove('in-control-center');
+  }
+}
+
+// ==================== 电脑端鼠标下拉支持 ====================
+let mouseStartY = 0;
+let mouseStartX = 0;
+let isMouseDragging = false;
+
+// 鼠标按下
+document.addEventListener('mousedown', (e) => {
+  if (controlOpen) return; // 如果控制中心已打开，则不响应
+  // 只在屏幕顶部区域触发
+  if (e.clientY < 100) {
+    mouseStartY = e.clientY;
+    mouseStartX = e.clientX;
+    isMouseDragging = true;
+    // 防止文本选择
+    e.preventDefault();
+  }
+});
+
+// 鼠标移动
+document.addEventListener('mousemove', (e) => {
+  if (!isMouseDragging) return;
+  const deltaY = e.clientY - mouseStartY;
+  const deltaX = Math.abs(e.clientX - mouseStartX);
+  
+  // 如果向下拖动，可以添加视觉反馈
+  if (deltaY > 0 && deltaX < 100) {
+    // 可以在这里添加控制中心的预览效果
+  }
+});
+
+// 鼠标释放
+document.addEventListener('mouseup', (e) => {
+  if (!isMouseDragging) return;
+  const deltaY = e.clientY - mouseStartY;
+  const deltaX = Math.abs(e.clientX - mouseStartX);
+  
+  // 向下拖动超过80px触发
+  if (deltaY > 80 && deltaX < 100) {
+    openControlCenter();
+  }
+  isMouseDragging = false;
+});
+
+// 防止拖拽时选中文本
+document.addEventListener('selectstart', (e) => {
+  if (isMouseDragging) {
+    e.preventDefault();
+  }
+});
+
+if (statusTrigger) {
+  statusTrigger.addEventListener('click', (e) => {
+    if (!controlOpen) {
+      openControlCenter();
+    } else {
+      closeControlCenter();
+    }
+  });
+}
+
+if (controlCenterBg) {
+  controlCenterBg.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeControlCenter();
+  });
+}
+
+if (controlHandle) {
+  controlHandle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (controlOpen) closeControlCenter();
+  });
+}
+
+document.querySelectorAll('.control-item').forEach(item => {
+  item.addEventListener('click', function() {
+    const controlType = this.getAttribute('data-control');
+    if (controlType === 'dark-mode') {
+      toggleDarkMode();
+      // 手动更新控制中心深色模式开关的状态
+      if (isDarkMode) {
+        this.classList.add('active');
+        this.classList.remove('inactive');
+      } else {
+        this.classList.remove('active');
+        this.classList.add('inactive');
+      }
+    } else {
+      this.classList.toggle('active');
+      this.classList.toggle('inactive');
+    }
+  });
+});
+
+// 深色模式切换逻辑
+let isDarkMode = false;
+
+function toggleDarkMode() {
+  isDarkMode = !isDarkMode;
+  document.body.classList.toggle('dark-mode', isDarkMode);
+  
+  // 更新控制中心开关状态
+  const controlDarkMode = document.querySelector('.control-item.control-dark-mode');
+  if (controlDarkMode) {
+    if (isDarkMode) {
+      controlDarkMode.classList.add('active');
+      controlDarkMode.classList.remove('inactive');
+    } else {
+      controlDarkMode.classList.remove('active');
+      controlDarkMode.classList.add('inactive');
+    }
+  }
+  
+  // 更新设置页面开关状态
+  const settingDarkMode = document.querySelector('#dark-mode-setting .item-switch');
+  if (settingDarkMode) {
+    settingDarkMode.classList.toggle('active', isDarkMode);
+  }
+  
+  // 保存到localStorage
+  localStorage.setItem('darkMode', isDarkMode);
+}
+
+// 初始化深色模式状态 - 默认亮色模式
+function initDarkMode() {
+  // 清除之前可能的深色模式设置，确保默认是亮色模式
+  localStorage.removeItem('darkMode');
+  isDarkMode = false;
+  document.body.classList.remove('dark-mode');
+  
+  // 确保控制中心开关状态为关闭
+  const controlDarkMode = document.querySelector('.control-item.control-dark-mode');
+  if (controlDarkMode) {
+    controlDarkMode.classList.remove('active');
+    controlDarkMode.classList.add('inactive');
+  }
+  
+  // 确保设置页面开关状态为关闭
+  const settingDarkMode = document.querySelector('#dark-mode-setting .item-switch');
+  if (settingDarkMode) {
+    settingDarkMode.classList.remove('active');
+  }
+}
+
+// 为设置页面的深色模式开关添加事件监听器
+const settingDarkMode = document.querySelector('#dark-mode-setting .item-switch');
+if (settingDarkMode) {
+  settingDarkMode.addEventListener('click', toggleDarkMode);
+}
+
+// 为设置页面的GPU硬件加速开关添加事件监听器
+const gpuSettingItem = document.getElementById('gpu-acceleration-setting');
+if (gpuSettingItem) {
+  const gpuSwitch = gpuSettingItem.querySelector('.item-switch');
+  
+  // 初始化开关状态
+  const gpuAccelerationEnabled = localStorage.getItem('gpuAcceleration') !== 'false';
+  if (gpuSwitch) {
+    if (gpuAccelerationEnabled) {
+      gpuSwitch.classList.add('active');
+    } else {
+      gpuSwitch.classList.remove('active');
+    }
+  }
+  
+  gpuSettingItem.addEventListener('click', function(e) {
+    e.stopPropagation(); // 阻止事件冒泡
+    const switchEl = gpuSettingItem.querySelector('.item-switch');
+    if (!switchEl) return;
+    
+    const isEnabled = switchEl.classList.contains('active');
+    console.log('[GPU] Switch clicked, current state:', isEnabled ? 'enabled' : 'disabled');
+    
+    if (isEnabled) {
+      // 关闭GPU加速
+      switchEl.classList.remove('active');
+      localStorage.setItem('gpuAcceleration', 'false');
+      document.body.classList.remove('gpu-accelerated');
+      console.log('[GPU] Hardware acceleration disabled');
+    } else {
+      // 开启GPU加速
+      switchEl.classList.add('active');
+      localStorage.setItem('gpuAcceleration', 'true');
+      document.body.classList.add('gpu-accelerated');
+      console.log('[GPU] Hardware acceleration enabled');
+    }
+  });
+}
+
+// 为设置页面的高级材质开关添加事件监听器
+const materialsSettingItem = document.getElementById('advanced-materials-setting');
+if (materialsSettingItem) {
+  const materialsSwitch = materialsSettingItem.querySelector('.item-switch');
+  
+  // 初始化开关状态
+  const advancedMaterialsEnabled = localStorage.getItem('advancedMaterials') !== 'false';
+  if (materialsSwitch) {
+    if (advancedMaterialsEnabled) {
+      materialsSwitch.classList.add('active');
+    } else {
+      materialsSwitch.classList.remove('active');
+    }
+  }
+  
+  materialsSettingItem.addEventListener('click', function(e) {
+    e.stopPropagation(); // 阻止事件冒泡
+    const switchEl = materialsSettingItem.querySelector('.item-switch');
+    if (!switchEl) return;
+    
+    const isEnabled = switchEl.classList.contains('active');
+    console.log('[Materials] Switch clicked, current state:', isEnabled ? 'enabled' : 'disabled');
+    
+    if (isEnabled) {
+      // 关闭高级材质
+      switchEl.classList.remove('active');
+      localStorage.setItem('advancedMaterials', 'false');
+      document.body.classList.remove('advanced-materials');
+      console.log('[Materials] Advanced materials disabled');
+    } else {
+      // 开启高级材质
+      switchEl.classList.add('active');
+      localStorage.setItem('advancedMaterials', 'true');
+      document.body.classList.add('advanced-materials');
+      console.log('[Materials] Advanced materials enabled');
+    }
+  });
+}
+
+// 为控制中心的音乐快捷方式添加事件监听器
+const shortcutMusic = document.querySelector('.shortcut-item[data-action="music"]');
+const controlMusicPlayer = document.getElementById('control-music-player');
+const controlMusicTitle = document.getElementById('control-music-title');
+const controlMusicStatus = document.getElementById('control-music-status');
+const controlMusicPlay = document.getElementById('control-music-play');
+const controlMusicPrev = document.getElementById('control-music-prev');
+const controlMusicNext = document.getElementById('control-music-next');
+
+// 更新控制中心音乐显示
+function updateControlMusicDisplay() {
+  if (!controlMusicPlayer) return;
+  
+  if (musicPlaylist.length > 0 && currentMusicIndex >= 0) {
+    controlMusicPlayer.style.display = 'block';
+    const music = musicPlaylist[currentMusicIndex];
+    if (controlMusicTitle) controlMusicTitle.textContent = music.name;
+    if (controlMusicStatus) controlMusicStatus.textContent = isMusicPlaying ? '正在播放' : '已暂停';
+    // 更新播放按钮图标
+    const controlPlayIcon = document.getElementById('control-play-icon');
+    if (controlPlayIcon) {
+      controlPlayIcon.setAttribute('d', isMusicPlaying 
+        ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'  // 暂停图标
+        : 'M8 5v14l11-7z'  // 播放图标
+      );
+    }
+  } else {
+    controlMusicPlayer.style.display = 'none';
+  }
+}
+
+// 点击音乐图标打开音乐应用
+if (shortcutMusic) {
+  shortcutMusic.addEventListener('click', function() {
+    closeControlCenter();
+    setTimeout(() => {
+      const musicIcon = document.querySelector('[data-app="music"]');
+      if (musicIcon) openApp('music', musicIcon);
+      // 如果有音乐在播放，跳转到播放器页面
+      if (musicPlaylist.length > 0 && currentMusicIndex >= 0) {
+        setTimeout(() => {
+          const playerItem = document.querySelector('[data-subpage="music-player"]');
+          if (playerItem) playerItem.click();
+        }, 300);
+      }
+    }, 300);
+  });
+}
+
+// 控制中心播放/暂停
+if (controlMusicPlay) {
+  controlMusicPlay.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (musicPlaylist.length === 0) return;
+    
+    if (isMusicPlaying) {
+      musicAudio.pause();
+      isMusicPlaying = false;
+    } else {
+      if (currentMusicIndex === -1) {
+        playMusic(0);
+      } else {
+        musicAudio.play();
+        isMusicPlaying = true;
+      }
+    }
+    updateMusicPlayerUI();
+    updateMusicPlaylist();
+    updateControlMusicDisplay();
+  });
+}
+
+// 控制中心上一首
+if (controlMusicPrev) {
+  controlMusicPrev.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (musicPlaylist.length === 0) return;
+    const newIndex = currentMusicIndex > 0 ? currentMusicIndex - 1 : musicPlaylist.length - 1;
+    playMusic(newIndex);
+    updateControlMusicDisplay();
+  });
+}
+
+// 控制中心下一首
+if (controlMusicNext) {
+  controlMusicNext.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (musicPlaylist.length === 0) return;
+    const newIndex = currentMusicIndex < musicPlaylist.length - 1 ? currentMusicIndex + 1 : 0;
+    playMusic(newIndex);
+    updateControlMusicDisplay();
+  });
+}
+
+// 为设置页面的亮度条添加事件监听器
+const settingBrightnessSlider = document.querySelector('#setting-brightness-slider');
+const brightnessValue = document.getElementById('brightness-value');
+if (settingBrightnessSlider && brightnessValue) {
+  let isDragging = false;
+  
+  function updateBrightness(e) {
+    const rect = settingBrightnessSlider.getBoundingClientRect();
+    const width = rect.width;
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, Math.round((x / width) * 100)));
+    
+    const sliderFill = settingBrightnessSlider.querySelector('.slider-fill');
+    if (sliderFill) {
+      sliderFill.style.width = percentage + '%';
+      brightnessValue.textContent = percentage;
+    }
+  }
+  
+  settingBrightnessSlider.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    updateBrightness(e);
+  });
+  
+  document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+      updateBrightness(e);
+    }
+  });
+  
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+  });
+  
+  settingBrightnessSlider.addEventListener('click', function(e) {
+    updateBrightness(e);
+  });
+}
+
+// 为控制中心的亮度条添加拖动功能
+const controlBrightnessSlider = document.getElementById('brightness-slider');
+if (controlBrightnessSlider) {
+  let isDragging = false;
+  
+  function updateControlBrightness(e) {
+    const rect = controlBrightnessSlider.getBoundingClientRect();
+    const width = rect.width;
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, Math.round((x / width) * 100)));
+    
+    const sliderFill = controlBrightnessSlider.querySelector('.slider-fill');
+    if (sliderFill) {
+      sliderFill.style.width = percentage + '%';
+    }
+  }
+  
+  controlBrightnessSlider.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    updateControlBrightness(e);
+  });
+  
+  document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+      updateControlBrightness(e);
+    }
+  });
+  
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+  });
+  
+  controlBrightnessSlider.addEventListener('click', function(e) {
+    updateControlBrightness(e);
+  });
+}
+
+// 初始化深色模式
+initDarkMode();
+
+document.querySelectorAll('.shortcut-item').forEach(item => {
+  item.addEventListener('click', function() {
+    const action = this.getAttribute('data-action');
+    if (action === 'camera' || action === 'calculator') {
+      closeControlCenter();
+      setTimeout(() => {
+        const icon = document.querySelector('[data-app="' + action + '"]');
+        if (icon) openApp(action, icon);
+      }, 300);
+    }
+  });
+});
+
+function setupSlider(slider) {
+  if (!slider) return;
+  let isDragging = false;
+  slider.addEventListener('mousedown', startDrag);
+  slider.addEventListener('touchstart', startDrag, { passive: true });
+  function startDrag(e) {
+    isDragging = true;
+    updateSlider(e);
+  }
+  function updateSlider(e) {
+    if (!isDragging) return;
+    const rect = slider.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    let percent = (clientX - rect.left) / rect.width;
+    percent = Math.max(0, Math.min(1, percent));
+    const fill = slider.querySelector('.slider-fill');
+    if (fill) fill.style.width = (percent * 100) + '%';
+  }
+  document.addEventListener('mousemove', updateSlider);
+  document.addEventListener('touchmove', updateSlider, { passive: true });
+  document.addEventListener('mouseup', () => isDragging = false);
+  document.addEventListener('touchend', () => isDragging = false);
+}
+
+setupSlider(document.getElementById('brightness-slider'));
+setupSlider(document.getElementById('volume-slider'));
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'c' || e.key === 'C') {
+    // 全局快捷键，可在任何情况下打开/关闭控制中心
+    controlOpen ? closeControlCenter() : openControlCenter();
+  }
+  // ESC键也可以关闭控制中心
+  if (e.key === 'Escape' && controlOpen) {
+    closeControlCenter();
+  }
+});
+
+// ==================== 拨号盘功能 ====================
+let dialNumber = '';
+const dialDisplay = document.getElementById('dial-display');
+const dialHint = document.getElementById('dial-hint');
+const callBtn = document.getElementById('call-btn');
+const callHint = document.getElementById('call-hint');
+const backspaceBtn = document.getElementById('dial-backspace');
+
+function updateDialDisplay() {
+  if (dialDisplay) {
+    // 格式化显示：每4位加一个空格
+    let formatted = dialNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+    dialDisplay.textContent = formatted;
+  }
+  
+  // 更新拨打按钮状态
+  if (callBtn) {
+    if (dialNumber.length > 0) {
+      callBtn.style.background = '#34C759';
+      callBtn.style.cursor = 'pointer';
+      if (callHint) callHint.textContent = '模拟拨号（不会真正拨打电话）';
+    } else {
+      callBtn.style.background = '#c7c7cc';
+      callBtn.style.cursor = 'not-allowed';
+      if (callHint) callHint.textContent = '';
+    }
+  }
+  
+  // 更新提示文字
+  if (dialHint) {
+    if (dialNumber.length === 0) {
+      dialHint.textContent = '添加号码';
+    } else if (dialNumber.length < 3) {
+      dialHint.textContent = '继续输入...';
+    } else {
+      dialHint.textContent = dialNumber.length + ' 位数字';
+    }
+  }
+}
+
+// 绑定拨号按钮
+document.querySelectorAll('.dial-btn[data-key]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const key = this.getAttribute('data-key');
+    if (dialNumber.length < 15) { // 限制最大长度
+      dialNumber += key;
+      updateDialDisplay();
+      
+      // 添加点击反馈动画
+      this.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 100);
+    }
+  });
+});
+
+// 删除按钮
+if (backspaceBtn) {
+  backspaceBtn.addEventListener('click', function() {
+    dialNumber = dialNumber.slice(0, -1);
+    updateDialDisplay();
+    this.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+      this.style.transform = '';
+    }, 100);
+  });
+}
+
+// 长按0输入+
+document.querySelector('.dial-btn[data-key="0"]')?.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  if (dialNumber.length < 15) {
+    dialNumber += '+';
+    updateDialDisplay();
+  }
+});
+
+// 拨打按钮 - 仅模拟，不真正拨号
+if (callBtn) {
+  callBtn.addEventListener('click', function() {
+    if (dialNumber.length > 0) {
+      // 显示模拟拨号提示
+      const originalText = dialDisplay.textContent;
+      dialDisplay.innerHTML = '<span style="color: #34C759;">正在呼叫...</span>';
+      callBtn.style.transform = 'scale(0.9)';
+      
+      setTimeout(() => {
+        dialDisplay.innerHTML = '<span style="color: #FF3B30;">无法连接</span><br><span style="font-size: 12px; color: #86868b;">这是模拟器，无法拨打电话</span>';
+        callBtn.style.transform = '';
+        
+        setTimeout(() => {
+          dialDisplay.textContent = originalText;
+        }, 2000);
+      }, 1500);
+    }
+  });
+}
+
+// ==================== 流体云功能 ====================
+const fluidCloud = document.getElementById('fluid-cloud');
+const fluidCloudCollapsed = document.getElementById('fluid-cloud-collapsed');
+const fluidCloudExpanded = document.getElementById('fluid-cloud-expanded');
+const fluidCloudTitle = document.getElementById('fluid-cloud-title');
+const fluidCloudSubtitle = document.getElementById('fluid-cloud-subtitle');
+const fluidCloudIcon = document.getElementById('fluid-cloud-icon');
+const fluidCloudCover = document.getElementById('fluid-cloud-cover');
+const fluidCloudExpandedTitle = document.getElementById('fluid-cloud-expanded-title');
+const fluidCloudExpandedAlbum = document.getElementById('fluid-cloud-expanded-album');
+const fluidCloudPlayBtn = document.getElementById('fluid-cloud-play-btn');
+
+let isFluidCloudExpanded = false;
+
+// 更新流体云显示
+function updateFluidCloud() {
+  console.log('[FluidCloud] updateFluidCloud called, fluidCloud:', fluidCloud, 'musicPlaylist:', musicPlaylist.length, 'currentMusicIndex:', currentMusicIndex);
+  if (!fluidCloud) {
+    console.error('[FluidCloud] fluidCloud element is null!');
+    return;
+  }
+  
+  // 只有在有音乐播放列表且正在播放或暂停时才显示
+  if (musicPlaylist.length > 0 && currentMusicIndex >= 0) {
+    const music = musicPlaylist[currentMusicIndex];
+    console.log('[FluidCloud] Updating with music:', music.name);
+    
+    // 更新收起状态
+    if (fluidCloudTitle) fluidCloudTitle.textContent = music.name;
+    if (fluidCloudSubtitle) fluidCloudSubtitle.textContent = isMusicPlaying ? '正在播放' : '已暂停';
+    
+    // 更新展开状态
+    if (fluidCloudExpandedTitle) fluidCloudExpandedTitle.textContent = music.name;
+    if (fluidCloudExpandedAlbum) fluidCloudExpandedAlbum.textContent = '本地音乐';
+    // 更新播放按钮图标
+    const playIconPath = document.getElementById('fluid-cloud-play-icon');
+    if (playIconPath) {
+      playIconPath.setAttribute('d', isMusicPlaying 
+        ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'  // 暂停图标（两条竖线）
+        : 'M8 5v14l11-7z'  // 播放图标（三角形）
+      );
+    }
+    
+    // 显示流体云
+    fluidCloud.classList.add('show');
+    console.log('[FluidCloud] Added show class, classes:', fluidCloud.className);
+    
+    // 根据播放状态添加/移除暂停样式
+    if (isMusicPlaying) {
+      fluidCloud.classList.remove('paused');
+    } else {
+      fluidCloud.classList.add('paused');
+    }
+  } else {
+    console.log('[FluidCloud] Hiding fluid cloud');
+    // 隐藏流体云
+    fluidCloud.classList.remove('show');
+    fluidCloud.classList.remove('expanded');
+    isFluidCloudExpanded = false;
+  }
+}
+
+// 流体云展开/收起切换
+function fluidCloudToggleExpand() {
+  console.log('[FluidCloud] Toggle expand called, fluidCloud:', fluidCloud);
+  if (!fluidCloud) {
+    console.error('[FluidCloud] fluidCloud element not found!');
+    return;
+  }
+  
+  isFluidCloudExpanded = !isFluidCloudExpanded;
+  console.log('[FluidCloud] isFluidCloudExpanded:', isFluidCloudExpanded);
+  
+  if (isFluidCloudExpanded) {
+    fluidCloud.classList.add('expanded');
+    console.log('[FluidCloud] Added expanded class');
+  } else {
+    fluidCloud.classList.remove('expanded');
+    console.log('[FluidCloud] Removed expanded class');
+  }
+}
+
+// 流体云打开应用 - 从流体云位置缩放到全屏
+function fluidCloudOpenApp() {
+  console.log('[FluidCloud] Open app called, musicPlaylist:', musicPlaylist.length);
+  if (musicPlaylist.length === 0) {
+    console.warn('[FluidCloud] No music in playlist');
+    return;
+  }
+  
+  // 获取流体云展开元素的位置
+  const fluidCloudRect = fluidCloudExpanded.getBoundingClientRect();
+  console.log('[FluidCloud] Fluid cloud rect:', fluidCloudRect);
+  
+  // 关闭控制中心（如果打开）
+  closeControlCenter();
+  
+  // 先收起流体云
+  fluidCloud.classList.remove('expanded');
+  isFluidCloudExpanded = false;
+  
+  // 延迟后打开音乐应用，实现从流体云位置展开的动画
+  setTimeout(() => {
+    const musicIcon = document.querySelector('[data-app="music"]');
+    console.log('[FluidCloud] Music icon:', musicIcon);
+    if (musicIcon) {
+      // 保存流体云位置用于动画
+      window.fluidCloudOrigin = {
+        x: fluidCloudRect.left + fluidCloudRect.width / 2,
+        y: fluidCloudRect.top + fluidCloudRect.height / 2
+      };
+      console.log('[FluidCloud] Origin set to:', window.fluidCloudOrigin);
+      
+      openAppFromFluidCloud('music', musicIcon);
+    } else {
+      console.error('[FluidCloud] Music icon not found!');
+    }
+  }, 200);
+}
+
+// 从流体云位置打开应用（带缩放动画）
+function openAppFromFluidCloud(appName, clickIcon) {
+  resetAllPages();
+  currentIcon = clickIcon;
+  
+  // 使用流体云位置作为动画起点
+  const cx = window.fluidCloudOrigin ? window.fluidCloudOrigin.x : window.innerWidth / 2;
+  const cy = window.fluidCloudOrigin ? window.fluidCloudOrigin.y : window.innerHeight / 2;
+  
+  app.style.transformOrigin = cx + 'px ' + cy + 'px';
+  
+  const targetPage = document.getElementById('page-' + appName);
+  if (!targetPage) return;
+
+  currentPage = targetPage;
+  currentPage.classList.add('show');
+
+  // 添加壁纸缩放效果和应用显示
+  desktop.classList.add('app-open');
+  blur.classList.add('app-open');
+  status.classList.add('hidden');
+  blur.classList.add('active');
+
+  // 应用从流体云位置缩放的动画
+  app.style.transform = 'scale(0)';
+  app.style.opacity = '0';
+  app.classList.add('show');
+
+  // 强制重绘
+  app.offsetHeight;
+
+  // 开始缩放动画
+  app.style.transition = 'transform 0.5s var(--ios-spring), opacity 0.3s var(--ios-smooth)';
+  app.style.transform = 'scale(1)';
+  app.style.opacity = '1';
+  
+  // 如果打开的是音乐应用，隐藏流体云
+  if (appName === 'music' && fluidCloud) {
+    fluidCloud.classList.add('in-music-app');
+  }
+  
+  // 跳转到播放器页面
+  setTimeout(() => {
+    const playerItem = document.querySelector('[data-subpage="music-player"]');
+    if (playerItem) playerItem.click();
+  }, 400);
+}
+
+// 流体云播放/暂停切换
+function fluidCloudTogglePlay() {
+  if (musicPlaylist.length === 0) return;
+  
+  if (currentMusicIndex === -1) {
+    playMusic(0);
+    return;
+  }
+  
+  if (isMusicPlaying) {
+    musicAudio.pause();
+    isMusicPlaying = false;
+  } else {
+    musicAudio.play();
+    isMusicPlaying = true;
+  }
+  
+  updateMusicPlayerUI();
+  updateMusicPlaylist();
+  updateFluidCloud();
+  updateControlMusicDisplay();
+}
+
+// 流体云上一首
+function fluidCloudPrev() {
+  if (musicPlaylist.length === 0) return;
+  const newIndex = currentMusicIndex > 0 ? currentMusicIndex - 1 : musicPlaylist.length - 1;
+  playMusic(newIndex);
+}
+
+// 流体云下一首
+function fluidCloudNext() {
+  if (musicPlaylist.length === 0) return;
+  const newIndex = currentMusicIndex < musicPlaylist.length - 1 ? currentMusicIndex + 1 : 0;
+  playMusic(newIndex);
+}
+
+// 将流体云函数挂载到 window 对象，供 HTML 内联事件调用
+window.fluidCloudToggleExpand = fluidCloudToggleExpand;
+window.fluidCloudOpenApp = fluidCloudOpenApp;
+window.fluidCloudTogglePlay = fluidCloudTogglePlay;
+window.fluidCloudPrev = fluidCloudPrev;
+window.fluidCloudNext = fluidCloudNext;
+console.log('[FluidCloud] Functions mounted to window');
+
+// 点击外部区域收起流体云
+document.addEventListener('click', function(e) {
+  if (isFluidCloudExpanded && fluidCloud && !fluidCloud.contains(e.target)) {
+    fluidCloud.classList.remove('expanded');
+    isFluidCloudExpanded = false;
+    console.log('[FluidCloud] Collapsed by clicking outside');
+  }
+});
+
+// ==================== 音乐播放器功能 ====================
+let musicPlaylist = [];
+let currentMusicIndex = -1;
+let isMusicPlaying = false;
+
+const musicUploadBtn = document.getElementById('music-upload-btn');
+const musicFileInput = document.getElementById('music-file-input');
+const musicPlaylistContainer = document.getElementById('music-playlist');
+const musicAudio = document.getElementById('music-audio');
+const musicPlayBtn = document.getElementById('music-play-btn');
+const musicPrevBtn = document.getElementById('music-prev');
+const musicNextBtn = document.getElementById('music-next');
+const musicProgressBar = document.getElementById('music-progress-bar');
+const musicProgressFill = document.getElementById('music-progress-fill');
+const musicCurrentTime = document.getElementById('music-current-time');
+const musicDuration = document.getElementById('music-duration');
+const musicTitle = document.getElementById('music-title');
+const musicSinger = document.getElementById('music-singer');
+const musicCover = document.getElementById('music-cover');
+
+// 上传音乐按钮点击
+if (musicUploadBtn && musicFileInput) {
+  musicUploadBtn.addEventListener('click', function() {
+    musicFileInput.click();
+  });
+}
+
+// 文件选择处理
+if (musicFileInput) {
+  musicFileInput.addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+      if (file.type.startsWith('audio/') || file.name.match(/\.(mp3|wav|flac)$/i)) {
+        const musicItem = {
+          name: file.name.replace(/\.[^/.]+$/, ''),
+          file: file,
+          url: URL.createObjectURL(file)
+        };
+        musicPlaylist.push(musicItem);
+      }
+    });
+    updateMusicPlaylist();
+    // 如果这是第一首歌，自动播放
+    if (musicPlaylist.length === files.length && currentMusicIndex === -1) {
+      playMusic(0);
+    }
+  });
+}
+
+// 更新播放列表显示
+function updateMusicPlaylist() {
+  if (!musicPlaylistContainer) return;
+  
+  if (musicPlaylist.length === 0) {
+    musicPlaylistContainer.innerHTML = '<div class="item" style="justify-content: center; color: var(--text-gray);"><div class="item-text">暂无音乐，请点击"导入音乐"导入</div></div>';
+    return;
+  }
+  
+  musicPlaylistContainer.innerHTML = '';
+  musicPlaylist.forEach((item, index) => {
+    const musicItem = document.createElement('div');
+    musicItem.className = 'item';
+    musicItem.style.cursor = 'pointer';
+    musicItem.innerHTML = `
+      <div class="item-icon" style="background: #FF2D55"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+      <div class="item-text">${item.name}</div>
+      <div class="item-arrow">${index === currentMusicIndex ? (isMusicPlaying ? '▶' : '⏸') : '>'}</div>
+    `;
+    musicItem.addEventListener('click', function() {
+      playMusic(index);
+    });
+    musicPlaylistContainer.appendChild(musicItem);
+  });
+}
+
+// 播放指定音乐
+function playMusic(index) {
+  if (index < 0 || index >= musicPlaylist.length) return;
+  
+  currentMusicIndex = index;
+  const music = musicPlaylist[index];
+  
+  if (musicAudio) {
+    musicAudio.src = music.url;
+    const playPromise = musicAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        // 忽略播放中断错误，这是正常的浏览器行为
+        if (error.name !== 'AbortError') {
+          console.error('[Music] Play error:', error);
+        }
+      });
+    }
+    isMusicPlaying = true;
+    updateMusicPlayerUI();
+    updateMusicPlaylist();
+    updateFluidCloud();
+  }
+}
+
+// 更新播放器UI
+function updateMusicPlayerUI() {
+  if (currentMusicIndex === -1 || !musicPlaylist[currentMusicIndex]) return;
+
+  const music = musicPlaylist[currentMusicIndex];
+  if (musicTitle) musicTitle.textContent = music.name;
+  if (musicSinger) musicSinger.textContent = '本地音乐';
+  // 更新播放按钮图标
+  const musicPlayIcon = document.getElementById('music-play-icon');
+  if (musicPlayIcon) {
+    musicPlayIcon.setAttribute('d', isMusicPlaying
+      ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'  // 暂停图标
+      : 'M8 5v14l11-7z'  // 播放图标
+    );
+  }
+
+  // 同时更新控制中心显示
+  updateControlMusicDisplay();
+
+  // 更新流体云显示
+  updateFluidCloud();
+}
+
+// 播放/暂停切换
+if (musicPlayBtn && musicAudio) {
+  musicPlayBtn.addEventListener('click', function() {
+    if (currentMusicIndex === -1) {
+      if (musicPlaylist.length > 0) {
+        playMusic(0);
+      }
+      return;
+    }
+    
+    if (isMusicPlaying) {
+      musicAudio.pause();
+      isMusicPlaying = false;
+    } else {
+      musicAudio.play();
+      isMusicPlaying = true;
+    }
+    updateMusicPlayerUI();
+    updateMusicPlaylist();
+  });
+}
+
+// 上一首
+if (musicPrevBtn) {
+  musicPrevBtn.addEventListener('click', function() {
+    if (musicPlaylist.length === 0) return;
+    const newIndex = currentMusicIndex > 0 ? currentMusicIndex - 1 : musicPlaylist.length - 1;
+    playMusic(newIndex);
+  });
+}
+
+// 下一首
+if (musicNextBtn) {
+  musicNextBtn.addEventListener('click', function() {
+    if (musicPlaylist.length === 0) return;
+    const newIndex = currentMusicIndex < musicPlaylist.length - 1 ? currentMusicIndex + 1 : 0;
+    playMusic(newIndex);
+  });
+}
+
+// 音频事件监听
+if (musicAudio) {
+  // 加载完成
+  musicAudio.addEventListener('loadedmetadata', function() {
+    if (musicDuration) {
+      musicDuration.textContent = formatMusicTime(musicAudio.duration);
+    }
+  });
+  
+  // 播放结束
+  musicAudio.addEventListener('ended', function() {
+    if (musicPlaylist.length > 0) {
+      const newIndex = currentMusicIndex < musicPlaylist.length - 1 ? currentMusicIndex + 1 : 0;
+      playMusic(newIndex);
+    }
+  });
+}
+
+// 进度条点击和拖动
+if (musicProgressBar && musicAudio) {
+  let isDragging = false;
+  let wasPlaying = false;
+  
+  // 点击跳转
+  musicProgressBar.addEventListener('click', function(e) {
+    if (!musicAudio.duration) return;
+    const rect = musicProgressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    musicAudio.currentTime = percent * musicAudio.duration;
+  });
+  
+  // 鼠标按下开始拖动
+  musicProgressBar.addEventListener('mousedown', function(e) {
+    if (!musicAudio.duration) return;
+    isDragging = true;
+    wasPlaying = !musicAudio.paused;
+    if (wasPlaying) musicAudio.pause();
+    updateProgressFromEvent(e);
+    e.preventDefault();
+  });
+  
+  // 鼠标移动时更新进度
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    updateProgressFromEvent(e);
+  });
+  
+  // 鼠标释放结束拖动
+  document.addEventListener('mouseup', function(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    updateProgressFromEvent(e);
+    if (wasPlaying) musicAudio.play();
+  });
+  
+  // 触摸开始
+  musicProgressBar.addEventListener('touchstart', function(e) {
+    if (!musicAudio.duration) return;
+    isDragging = true;
+    wasPlaying = !musicAudio.paused;
+    if (wasPlaying) musicAudio.pause();
+    updateProgressFromTouch(e.touches[0]);
+  }, { passive: false });
+  
+  // 触摸移动
+  musicProgressBar.addEventListener('touchmove', function(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    updateProgressFromTouch(e.touches[0]);
+  }, { passive: false });
+  
+  // 触摸结束
+  musicProgressBar.addEventListener('touchend', function(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    if (wasPlaying) musicAudio.play();
+  });
+  
+  // 从鼠标事件更新进度
+  function updateProgressFromEvent(e) {
+    const rect = musicProgressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    musicAudio.currentTime = percent * musicAudio.duration;
+    // 立即更新进度条显示
+    if (musicProgressFill) {
+      musicProgressFill.style.width = (percent * 100) + '%';
+    }
+    // 立即更新时间显示
+    if (musicCurrentTime) {
+      musicCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    }
+    // 立即更新歌词
+    updateLyrics(musicAudio.currentTime);
+    updateFullscreenLyrics(musicAudio.currentTime);
+  }
+  
+  // 从触摸事件更新进度
+  function updateProgressFromTouch(touch) {
+    const rect = musicProgressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+    musicAudio.currentTime = percent * musicAudio.duration;
+    // 立即更新进度条显示
+    if (musicProgressFill) {
+      musicProgressFill.style.width = (percent * 100) + '%';
+    }
+    // 立即更新时间显示
+    if (musicCurrentTime) {
+      musicCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    }
+    // 立即更新歌词
+    updateLyrics(musicAudio.currentTime);
+    updateFullscreenLyrics(musicAudio.currentTime);
+  }
+}
+
+// 格式化时间
+function formatMusicTime(seconds) {
+  if (isNaN(seconds)) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
+
+// ==================== 全屏歌词功能 ====================
+let isFullscreenLyrics = false;
+
+const fullscreenLyrics = document.getElementById('fullscreen-lyrics');
+const fullscreenLyricsContent = document.getElementById('fullscreen-lyrics-content');
+const musicPlayer = document.getElementById('music-player');
+const musicInfo = document.getElementById('music-info');
+const musicProgressContainer = document.getElementById('music-progress-container');
+const musicControls = document.getElementById('music-controls');
+const musicLyricsImport = document.getElementById('music-lyrics-import');
+const fullscreenSongInfo = document.getElementById('fullscreen-song-info');
+const fullscreenArtistInfo = document.getElementById('fullscreen-artist-info');
+const fullscreenCurrentTime = document.getElementById('fullscreen-current-time');
+const fullscreenDuration = document.getElementById('fullscreen-duration');
+const fullscreenProgressContainer = document.getElementById('fullscreen-progress-container');
+const fullscreenProgressFill = document.getElementById('fullscreen-progress-fill');
+const fullscreenPlayBtn = document.getElementById('fullscreen-play-btn');
+const fullscreenPrevBtn = document.getElementById('fullscreen-prev-btn');
+const fullscreenNextBtn = document.getElementById('fullscreen-next-btn');
+const exitFullscreenBtn = document.querySelector('.exit-fullscreen-btn');
+
+// 切换全屏歌词
+function toggleFullscreenLyrics() {
+  if (!fullscreenLyrics) return;
+  
+  isFullscreenLyrics = !isFullscreenLyrics;
+  
+  if (isFullscreenLyrics) {
+    // 更新歌名显示
+    const fullscreenSongTitle = document.getElementById('fullscreen-song-title');
+    if (fullscreenSongTitle && musicPlaylist.length > 0 && currentMusicIndex >= 0) {
+      fullscreenSongTitle.textContent = musicPlaylist[currentMusicIndex].name;
+    }
+    
+    // 显示全屏歌词
+    fullscreenLyrics.style.display = 'block';
+    // Initial state for entrance animation (从右边进入)
+    fullscreenLyrics.style.opacity = '0';
+    fullscreenLyrics.style.transform = 'translateX(100%)';
+    
+    // 隐藏其他元素 with transition
+    if (musicCover) musicCover.style.transition = 'opacity 0.4s ease';
+    if (musicInfo) musicInfo.style.transition = 'opacity 0.4s ease';
+    if (musicLyricsImport) musicLyricsImport.style.transition = 'opacity 0.4s ease';
+    if (musicProgressContainer) musicProgressContainer.style.transition = 'opacity 0.4s ease';
+    if (musicControls) musicControls.style.transition = 'opacity 0.4s ease';
+    
+    if (musicCover) musicCover.style.opacity = '0';
+    if (musicInfo) musicInfo.style.opacity = '0';
+    if (musicLyricsImport) musicLyricsImport.style.opacity = '0';
+    if (musicProgressContainer) musicProgressContainer.style.opacity = '0';
+    if (musicControls) musicControls.style.opacity = '0';
+    
+    // Force reflow and then apply animation
+    void fullscreenLyrics.offsetWidth;
+    
+    // Animate entrance (从右到左滑入)
+    fullscreenLyrics.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    fullscreenLyrics.style.opacity = '1';
+    fullscreenLyrics.style.transform = 'translateX(0)';
+    
+    // 隐藏其他元素
+    setTimeout(() => {
+      if (musicCover) musicCover.style.display = 'none';
+      if (musicInfo) musicInfo.style.display = 'none';
+      if (musicLyricsImport) musicLyricsImport.style.display = 'none';
+      if (musicProgressContainer) musicProgressContainer.style.display = 'none';
+      if (musicControls) musicControls.style.display = 'none';
+    }, 400);
+    
+    // 更新时间信息
+    if (currentMusicIndex >= 0 && musicPlaylist[currentMusicIndex]) {
+      if (fullscreenCurrentTime && musicAudio && musicAudio.currentTime) {
+        fullscreenCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+      }
+      if (fullscreenDuration && musicAudio && musicAudio.duration) {
+        fullscreenDuration.textContent = formatMusicTime(musicAudio.duration);
+      }
+    }
+    
+    // 加载歌词到全屏
+    loadFullscreenLyrics();
+    
+    // 更新播放按钮状态
+    updateFullscreenPlayButton();
+    
+    // 立即更新歌词显示，确保当前歌词在正确位置
+    if (musicAudio && musicAudio.currentTime) {
+      setTimeout(() => {
+        updateFullscreenLyrics(musicAudio.currentTime);
+      }, 100);
+    }
+  } else {
+    // Prepare for exit animation (向右滑出)
+    fullscreenLyrics.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    fullscreenLyrics.style.opacity = '0';
+    fullscreenLyrics.style.transform = 'translateX(100%)';
+    
+    // Show other elements with transition
+    if (musicCover) {
+      musicCover.style.display = 'block';
+      musicCover.style.opacity = '0';
+      musicCover.style.transition = 'opacity 0.4s ease';
+    }
+    if (musicInfo) {
+      musicInfo.style.display = 'block';
+      musicInfo.style.opacity = '0';
+      musicInfo.style.transition = 'opacity 0.4s ease';
+    }
+    if (musicLyricsImport) {
+      musicLyricsImport.style.display = 'flex';
+      musicLyricsImport.style.opacity = '0';
+      musicLyricsImport.style.transition = 'opacity 0.4s ease';
+    }
+    if (musicProgressContainer) {
+      musicProgressContainer.style.display = 'block';
+      musicProgressContainer.style.opacity = '0';
+      musicProgressContainer.style.transition = 'opacity 0.4s ease';
+    }
+    if (musicControls) {
+      musicControls.style.display = 'flex';
+      musicControls.style.opacity = '0';
+      musicControls.style.transition = 'opacity 0.4s ease';
+    }
+    
+    // Animate other elements back in after a delay
+    setTimeout(() => {
+      if (musicCover) musicCover.style.opacity = '1';
+      if (musicInfo) musicInfo.style.opacity = '1';
+      if (musicLyricsImport) musicLyricsImport.style.opacity = '1';
+      if (musicProgressContainer) musicProgressContainer.style.opacity = '1';
+      if (musicControls) musicControls.style.opacity = '1';
+      
+      // Finally hide the fullscreen lyrics after animation completes
+      fullscreenLyrics.style.display = 'none';
+    }, 300);
+  }
+}
+window.toggleFullscreenLyrics = toggleFullscreenLyrics;
+
+// 加载全屏歌词
+function loadFullscreenLyrics() {
+  if (!fullscreenLyricsContent) return;
+  
+  if (currentLyrics.length === 0) {
+    fullscreenLyricsContent.innerHTML = '<div class="fullscreen-lyric-line initial" style="color: rgba(255,255,255,0.5); font-size: 24px; line-height: 1.6; margin: 15px 0; font-weight: 400; transition: all 0.4s ease; text-align: left; filter: blur(2px);">暂无歌词</div>';
+    return;
+  }
+  
+  fullscreenLyricsContent.innerHTML = '';
+  currentLyrics.forEach((line, index) => {
+    const lyricLine = document.createElement('div');
+    lyricLine.className = 'fullscreen-lyric-line';
+    lyricLine.dataset.index = index;
+    lyricLine.style.cssText = 'color: rgba(255,255,255,0.5); font-size: 24px; line-height: 1.6; margin: 15px 0; font-weight: 400; transition: all 0.4s ease; text-align: left; filter: blur(1px);';
+    lyricLine.textContent = line.text;
+    fullscreenLyricsContent.appendChild(lyricLine);
+  });
+  
+}
+
+// 更新全屏歌词显示
+function updateFullscreenLyrics(currentTime) {
+  if (!fullscreenLyricsContent || currentLyrics.length === 0) return;
+  if (!isFullscreenLyrics) return;
+  
+  // 找到当前播放的歌词
+  let newIndex = -1;
+  for (let i = 0; i < currentLyrics.length; i++) {
+    if (currentLyrics[i].time <= currentTime) {
+      newIndex = i;
+    } else {
+      break;
+    }
+  }
+  
+  if (newIndex < 0) newIndex = 0;
+  
+  // 获取歌词元素
+  const lyricElements = fullscreenLyricsContent.querySelectorAll('.fullscreen-lyric-line');
+  if (lyricElements.length === 0) return;
+  
+  // Reset all styles first with smooth transitions
+  lyricElements.forEach((line, index) => {
+    line.style.transition = 'all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1)';
+    line.style.color = 'rgba(255,255,255,0.5)';
+    line.style.fontSize = '24px';
+    line.style.fontWeight = '300';
+    line.style.transform = 'scale(1)';
+    line.style.opacity = '0.5';
+    line.style.filter = 'blur(1px)';
+  });
+  
+  // Highlight current lyric and scroll
+  if (lyricElements[newIndex]) {
+    const currentLine = lyricElements[newIndex];
+    currentLine.style.transition = 'all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1)';
+    currentLine.style.color = 'white';
+    currentLine.style.fontSize = '28px';
+    currentLine.style.fontWeight = '600';
+    currentLine.style.transform = 'scale(1.05)';
+    currentLine.style.opacity = '1';
+    currentLine.style.filter = 'blur(0)';
+    
+    // 使用 offsetTop 计算滚动位置
+    // 让当前歌词显示在容器中央偏上的位置
+    const container = document.querySelector('.fullscreen-lyrics-container');
+    const targetY = 100; // 目标位置：更靠下一些
+    const currentOffsetTop = currentLine.offsetTop;
+    const translateY = targetY - currentOffsetTop;
+    
+    fullscreenLyricsContent.style.transition = 'transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)';
+    fullscreenLyricsContent.style.transform = `translateY(${translateY}px)`;
+  }
+}
+
+// 更新全屏播放按钮状态
+function updateFullscreenPlayButton() {
+  if (!fullscreenPlayBtn || !musicAudio) return;
+  
+  if (!musicAudio.paused) {
+    fullscreenPlayBtn.innerHTML = '⏸';
+  } else {
+    fullscreenPlayBtn.innerHTML = '▶';
+  }
+}
+
+// 绑定全屏歌词控制按钮事件
+if (fullscreenPlayBtn) {
+  fullscreenPlayBtn.addEventListener('click', function() {
+    if (musicAudio) {
+      if (musicAudio.paused) {
+        musicAudio.play();
+      } else {
+        musicAudio.pause();
+      }
+      updateFullscreenPlayButton();
+    }
+  });
+}
+
+if (fullscreenPrevBtn) {
+  fullscreenPrevBtn.addEventListener('click', function() {
+    playPrevMusic();
+  });
+}
+
+if (fullscreenNextBtn) {
+  fullscreenNextBtn.addEventListener('click', function() {
+    playNextMusic();
+  });
+}
+
+if (exitFullscreenBtn) {
+  exitFullscreenBtn.addEventListener('click', function(e) {
+    e.stopPropagation(); // 防止冒泡触发toggleFullscreenLyrics
+    if (isFullscreenLyrics) {
+      // Prepare for exit animation (向右滑出)
+      fullscreenLyrics.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      fullscreenLyrics.style.opacity = '0';
+      fullscreenLyrics.style.transform = 'translateX(100%)';
+      
+      // Show other elements with transition
+      if (musicCover) {
+        musicCover.style.display = 'block';
+        musicCover.style.opacity = '0';
+        musicCover.style.transition = 'opacity 0.4s ease';
+      }
+      if (musicInfo) {
+        musicInfo.style.display = 'block';
+        musicInfo.style.opacity = '0';
+        musicInfo.style.transition = 'opacity 0.4s ease';
+      }
+      if (musicLyricsImport) {
+        musicLyricsImport.style.display = 'flex';
+        musicLyricsImport.style.opacity = '0';
+        musicLyricsImport.style.transition = 'opacity 0.4s ease';
+      }
+      if (musicProgressContainer) {
+        musicProgressContainer.style.display = 'block';
+        musicProgressContainer.style.opacity = '0';
+        musicProgressContainer.style.transition = 'opacity 0.4s ease';
+      }
+      if (musicControls) {
+        musicControls.style.display = 'flex';
+        musicControls.style.opacity = '0';
+        musicControls.style.transition = 'opacity 0.4s ease';
+      }
+      
+      // 等待动画完成后再真正隐藏全屏歌词
+      setTimeout(() => {
+        isFullscreenLyrics = false;
+        fullscreenLyrics.style.display = 'none';
+        
+        // 完全显示其他元素
+        if (musicCover) musicCover.style.opacity = '1';
+        if (musicInfo) musicInfo.style.opacity = '1';
+        if (musicLyricsImport) musicLyricsImport.style.opacity = '1';
+        if (musicProgressContainer) musicProgressContainer.style.opacity = '1';
+        if (musicControls) musicControls.style.opacity = '1';
+      }, 300);
+    }
+  });
+}
+
+// 绑定全屏进度条点击和拖动事件
+if (fullscreenProgressContainer && musicAudio) {
+  let isFullscreenDragging = false;
+  let wasFullscreenPlaying = false;
+  
+  // 点击跳转
+  fullscreenProgressContainer.addEventListener('click', function(e) {
+    if (!musicAudio || isNaN(musicAudio.duration)) return;
+    const rect = this.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    musicAudio.currentTime = percent * musicAudio.duration;
+  });
+  
+  // 鼠标按下开始拖动
+  fullscreenProgressContainer.addEventListener('mousedown', function(e) {
+    if (!musicAudio || isNaN(musicAudio.duration)) return;
+    isFullscreenDragging = true;
+    wasFullscreenPlaying = !musicAudio.paused;
+    if (wasFullscreenPlaying) musicAudio.pause();
+    updateFullscreenProgressFromEvent(e);
+    e.preventDefault();
+  });
+  
+  // 鼠标移动时更新进度
+  document.addEventListener('mousemove', function(e) {
+    if (!isFullscreenDragging) return;
+    updateFullscreenProgressFromEvent(e);
+  });
+  
+  // 鼠标释放结束拖动
+  document.addEventListener('mouseup', function(e) {
+    if (!isFullscreenDragging) return;
+    isFullscreenDragging = false;
+    updateFullscreenProgressFromEvent(e);
+    if (wasFullscreenPlaying) musicAudio.play();
+  });
+  
+  // 触摸开始
+  fullscreenProgressContainer.addEventListener('touchstart', function(e) {
+    if (!musicAudio || isNaN(musicAudio.duration)) return;
+    isFullscreenDragging = true;
+    wasFullscreenPlaying = !musicAudio.paused;
+    if (wasFullscreenPlaying) musicAudio.pause();
+    updateFullscreenProgressFromTouch(e.touches[0]);
+  }, { passive: false });
+  
+  // 触摸移动
+  fullscreenProgressContainer.addEventListener('touchmove', function(e) {
+    if (!isFullscreenDragging) return;
+    e.preventDefault();
+    updateFullscreenProgressFromTouch(e.touches[0]);
+  }, { passive: false });
+  
+  // 触摸结束
+  fullscreenProgressContainer.addEventListener('touchend', function(e) {
+    if (!isFullscreenDragging) return;
+    isFullscreenDragging = false;
+    if (wasFullscreenPlaying) musicAudio.play();
+  });
+  
+  // 从鼠标事件更新进度
+  function updateFullscreenProgressFromEvent(e) {
+    const rect = fullscreenProgressContainer.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    musicAudio.currentTime = percent * musicAudio.duration;
+    // 立即更新进度条显示
+    if (fullscreenProgressFill) {
+      fullscreenProgressFill.style.width = (percent * 100) + '%';
+    }
+    // 立即更新时间显示
+    if (fullscreenCurrentTime) {
+      fullscreenCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    }
+    // 立即更新歌词
+    updateLyrics(musicAudio.currentTime);
+    updateFullscreenLyrics(musicAudio.currentTime);
+  }
+  
+  // 从触摸事件更新进度
+  function updateFullscreenProgressFromTouch(touch) {
+    const rect = fullscreenProgressContainer.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+    musicAudio.currentTime = percent * musicAudio.duration;
+    // 立即更新进度条显示
+    if (fullscreenProgressFill) {
+      fullscreenProgressFill.style.width = (percent * 100) + '%';
+    }
+    // 立即更新时间显示
+    if (fullscreenCurrentTime) {
+      fullscreenCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    }
+    // 立即更新歌词
+    updateLyrics(musicAudio.currentTime);
+    updateFullscreenLyrics(musicAudio.currentTime);
+  }
+}
+
+// ==================== 歌词功能 ====================
+const musicLyricsContainer = document.getElementById('music-lyrics-container');
+const musicLyrics = document.getElementById('music-lyrics');
+const musicImportLrcBtn = document.getElementById('music-import-lrc-btn');
+const musicLrcInput = document.getElementById('music-lrc-input');
+
+// 导入歌词按钮点击
+if (musicImportLrcBtn && musicLrcInput) {
+  musicImportLrcBtn.addEventListener('click', function() {
+    musicLrcInput.click();
+  });
+}
+
+// 解析LRC歌词文件
+function parseLRC(lrcText) {
+  const lines = lrcText.split('\n');
+  const lyrics = [];
+  
+  const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/;
+  
+  lines.forEach(line => {
+    const match = line.match(timeRegex);
+    if (match) {
+      const minutes = parseInt(match[1]);
+      const seconds = parseInt(match[2]);
+      const milliseconds = parseInt(match[3].padEnd(3, '0'));
+      const text = match[4].trim();
+      
+      if (text) {
+        const time = minutes * 60 + seconds + milliseconds / 1000;
+        lyrics.push({ time, text });
+      }
+    }
+  });
+  
+  return lyrics.sort((a, b) => a.time - b.time);
+}
+
+// 加载歌词
+function loadLyrics(lyrics) {
+  console.log('loadLyrics 被调用，歌词数量:', lyrics.length);
+  console.log('musicLyrics 元素:', musicLyrics);
+  currentLyrics = lyrics;
+  currentLyricIndex = -1;
+  
+  if (!musicLyrics) {
+    console.log('musicLyrics 未找到');
+    return;
+  }
+  
+  if (lyrics.length === 0) {
+    const currentLyricLine = musicLyrics.querySelector('.current-lyric-line');
+    const nextLyricLine = musicLyrics.querySelector('.next-lyric-line');
+    if (currentLyricLine) currentLyricLine.textContent = '暂无歌词';
+    if (nextLyricLine) nextLyricLine.textContent = '\u00A0'; // &nbsp; 的 Unicode
+    return;
+  }
+  
+  // 直接更新普通歌词显示区域
+  const currentLyricLine = musicLyrics.querySelector('.current-lyric-line');
+  const nextLyricLine = musicLyrics.querySelector('.next-lyric-line');
+  
+  console.log('普通歌词元素:', { currentLyricLine, nextLyricLine });
+  console.log('要设置的歌词:', { first: lyrics[0], second: lyrics[1] });
+  
+  if (currentLyricLine && lyrics[0]) {
+    currentLyricLine.textContent = lyrics[0].text;
+    currentLyricLine.style.transition = 'all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1)';
+    currentLyricLine.style.color = 'var(--primary-blue)';
+    currentLyricLine.style.fontSize = '16px';
+    currentLyricLine.style.fontWeight = '600';
+    currentLyricLine.style.opacity = '1';
+    console.log('已设置当前歌词:', lyrics[0].text);
+  } else {
+    console.log('当前歌词设置失败:', { currentLyricLine: !!currentLyricLine, hasLyric: !!lyrics[0] });
+  }
+  
+  if (nextLyricLine && lyrics[1]) {
+    nextLyricLine.textContent = lyrics[1].text;
+    nextLyricLine.style.transition = 'all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1)';
+    nextLyricLine.style.color = 'var(--text-gray)';
+    nextLyricLine.style.fontSize = '14px';
+    nextLyricLine.style.fontWeight = '400';
+    nextLyricLine.style.opacity = '0.6';
+    console.log('已设置下一歌词:', lyrics[1].text);
+  } else if (nextLyricLine) {
+    nextLyricLine.textContent = '\u00A0'; // &nbsp; 的 Unicode
+    console.log('已设置下一歌词为空白');
+  } else {
+    console.log('下一歌词元素未找到');
+  }
+  
+  // 初始化显示第一行
+  console.log('调用 updateLyrics(0)');
+  updateLyrics(0);
+}
+
+// 更新歌词显示
+function updateLyrics(currentTime) {
+  if (currentLyrics.length === 0) {
+    return;
+  }
+  
+  // 找到当前播放的歌词
+  let newIndex = -1;
+  for (let i = 0; i < currentLyrics.length; i++) {
+    if (currentLyrics[i].time <= currentTime) {
+      newIndex = i;
+    } else {
+      break;
+    }
+  }
+  // 如果没有找到匹配的歌词，使用第一个歌词
+  if (newIndex < 0 && currentLyrics.length > 0) {
+    newIndex = 0;
+  }
+  
+  if (newIndex !== currentLyricIndex) {
+    currentLyricIndex = newIndex;
+    
+    // 更新普通歌词显示区域
+    if (musicLyrics) {
+      const currentLyricLine = musicLyrics.querySelector('.current-lyric-line');
+      const nextLyricLine = musicLyrics.querySelector('.next-lyric-line');
+      
+      if (currentLyricLine && currentLyrics[newIndex]) {
+        // 更新当前歌词
+        currentLyricLine.textContent = currentLyrics[newIndex].text;
+        currentLyricLine.style.transition = 'all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1)';
+        currentLyricLine.style.color = 'var(--primary-blue)';
+        currentLyricLine.style.fontSize = '16px';
+        currentLyricLine.style.fontWeight = '600';
+        currentLyricLine.style.opacity = '1';
+      }
+      
+      // 查找下一行歌词
+      if (nextLyricLine && currentLyrics[newIndex + 1]) {
+        // 更新下一行歌词
+        nextLyricLine.textContent = currentLyrics[newIndex + 1].text;
+        nextLyricLine.style.transition = 'all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1)';
+        nextLyricLine.style.color = 'var(--text-gray)';
+        nextLyricLine.style.fontSize = '14px';
+        nextLyricLine.style.fontWeight = '400';
+        nextLyricLine.style.opacity = '0.6';
+      } else if (nextLyricLine) {
+        // 如果没有下一行歌词，则显示空白
+        nextLyricLine.textContent = '\u00A0'; // &nbsp; 的 Unicode
+      }
+    }
+    
+    // 更新全屏歌词显示区域
+    updateFullscreenLyrics(currentTime);
+  }
+}
+
+// 文件选择处理
+if (musicLrcInput) {
+  musicLrcInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const lrcText = event.target.result;
+      const lyrics = parseLRC(lrcText);
+      loadLyrics(lyrics);
+      
+      // 保存歌词到当前音乐
+      if (currentMusicIndex >= 0 && musicPlaylist[currentMusicIndex]) {
+        musicPlaylist[currentMusicIndex].lyrics = lyrics;
+      }
+      
+      // 重置文件输入框，允许再次选择同一文件
+      musicLrcInput.value = '';
+    };
+    reader.onerror = function() {
+      console.error('[Lyrics] Failed to read file');
+      // 重置文件输入框
+      musicLrcInput.value = '';
+    };
+    reader.readAsText(file);
+  });
+}
+
+// 在音频时间更新时同步歌词
+if (musicAudio) {
+  musicAudio.addEventListener('timeupdate', function() {
+    // 原有的进度更新代码...
+    if (musicProgressFill && musicAudio.duration) {
+      const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
+      musicProgressFill.style.width = percent + '%';
+    }
+    if (musicCurrentTime) {
+      musicCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    }
+    
+    // 更新全屏歌词的时间显示
+    if (fullscreenCurrentTime && musicAudio.currentTime) {
+      fullscreenCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    }
+    if (fullscreenDuration && musicAudio.duration) {
+      fullscreenDuration.textContent = formatMusicTime(musicAudio.duration);
+    }
+    
+    // 更新歌词
+    updateLyrics(musicAudio.currentTime);
+  });
+}
+
+// 播放音乐时加载对应歌词 - 使用函数包装避免提前引用
+function createPlayMusicWithLyrics() {
+  const originalPlayMusic = playMusic;
+  return function(index) {
+    originalPlayMusic(index);
+    
+    // 加载该歌曲的歌词
+    if (musicPlaylist && musicPlaylist[index] && musicPlaylist[index].lyrics) {
+      loadLyrics(musicPlaylist[index].lyrics);
+    } else {
+      loadLyrics([]);
+      if (musicLyrics) {
+        // 更新现有的歌词元素而不是替换整个容器
+        const currentLyricLine = musicLyrics.querySelector('.current-lyric-line');
+        const nextLyricLine = musicLyrics.querySelector('.next-lyric-line');
+        
+        if (currentLyricLine) {
+          currentLyricLine.textContent = '暂无歌词，点击导入歌词';
+          currentLyricLine.style.color = 'var(--text-gray)';
+          currentLyricLine.style.fontSize = '14px';
+          currentLyricLine.style.fontWeight = 'normal';
+          currentLyricLine.style.opacity = '1';
+        }
+        
+        if (nextLyricLine) {
+          nextLyricLine.textContent = '\u00A0'; // &nbsp; 的 Unicode
+          nextLyricLine.style.display = 'none'; // 隐藏下一行
+        }
+      }
+    }
+  };
+}
+
+// 覆盖playMusic函数
+playMusic = createPlayMusicWithLyrics();
+
+// 歌词变量（在 DOMContentLoaded 内部定义）
+let currentLyrics = [];
+let currentLyricIndex = -1;
+}); // 结束 DOMContentLoaded
+
+// ==================== Safari浏览器功能 ====================
+let safariHistory = [];
+let safariHistoryIndex = -1;
+let safariBookmarks = JSON.parse(localStorage.getItem('safariBookmarks') || '[{"url":"https://www.baidu.com","title":"百度"},{"url":"https://www.bing.com","title":"必应"},{"url":"https://www.google.com","title":"Google"}]');
+
+// 处理地址栏输入
+function handleSafariInput(event) {
+  if (event.key === 'Enter') {
+    const input = event.target;
+    let url = input.value.trim();
+    if (!url) return;
+    
+    // 如果没有协议，添加 https://
+    if (!url.match(/^https?:\/\//i) && !url.match(/^ftp:\/\//i)) {
+      // 如果是搜索关键词，使用百度
+      if (!url.match(/\.[a-z]{2,}$/i) || url.includes(' ')) {
+        url = 'https://www.baidu.com/s?wd=' + encodeURIComponent(url);
+      } else {
+        url = 'https://' + url;
+      }
+    }
+    
+    openUrl(url);
+  }
+}
+
+// 打开URL
+function openUrl(url) {
+  const iframe = document.getElementById('safari-iframe');
+  const home = document.getElementById('safari-home');
+  const urlInput = document.getElementById('safari-url-input');
+  
+  // 显示iframe，隐藏主页
+  iframe.classList.add('active');
+  home.classList.add('hidden');
+  
+  // 设置iframe源
+  iframe.src = url;
+  urlInput.value = url;
+  
+  // 添加到历史记录
+  addToHistory(url, url);
+  
+  // 更新导航按钮状态
+  updateSafariNavButtons();
+}
+
+// 后退
+function safariGoBack() {
+  if (safariHistoryIndex > 0) {
+    safariHistoryIndex--;
+    const historyItem = safariHistory[safariHistoryIndex];
+    if (historyItem) {
+      const iframe = document.getElementById('safari-iframe');
+      const urlInput = document.getElementById('safari-url-input');
+      iframe.src = historyItem.url;
+      urlInput.value = historyItem.url;
+      updateSafariNavButtons();
+    }
+  }
+}
+
+// 前进
+function safariGoForward() {
+  if (safariHistoryIndex < safariHistory.length - 1) {
+    safariHistoryIndex++;
+    const historyItem = safariHistory[safariHistoryIndex];
+    if (historyItem) {
+      const iframe = document.getElementById('safari-iframe');
+      const urlInput = document.getElementById('safari-url-input');
+      iframe.src = historyItem.url;
+      urlInput.value = historyItem.url;
+      updateSafariNavButtons();
+    }
+  }
+}
+
+// 刷新
+function safariReload() {
+  const iframe = document.getElementById('safari-iframe');
+  if (iframe.src) {
+    iframe.src = iframe.src;
+  }
+}
+
+// 更新导航按钮状态
+function updateSafariNavButtons() {
+  const backBtn = document.getElementById('safari-back');
+  const forwardBtn = document.getElementById('safari-forward');
+  
+  // 这里简化处理，实际应该监听iframe的加载事件
+  backBtn.classList.toggle('active', safariHistoryIndex > 0);
+  forwardBtn.classList.toggle('active', safariHistoryIndex < safariHistory.length - 1);
+}
+
+// 添加到历史记录
+function addToHistory(url, title) {
+  // 如果当前URL和上一个相同，不添加
+  if (safariHistoryIndex >= 0 && safariHistory[safariHistoryIndex] && safariHistory[safariHistoryIndex].url === url) {
+    return;
+  }
+  
+  // 移除当前位置之后的历史记录
+  safariHistory = safariHistory.slice(0, safariHistoryIndex + 1);
+  
+  // 添加新记录
+  safariHistory.push({ url, title, time: new Date() });
+  safariHistoryIndex++;
+  
+  // 限制历史记录数量
+  if (safariHistory.length > 100) {
+    safariHistory.shift();
+    safariHistoryIndex--;
+  }
+  
+  // 保存到localStorage
+  localStorage.setItem('safariHistory', JSON.stringify(safariHistory));
+  
+  // 更新历史记录页面
+  updateHistoryList();
+}
+
+// 更新历史记录列表
+function updateHistoryList() {
+  const historyList = document.getElementById('history-list');
+  if (!historyList) return;
+  
+  if (safariHistory.length === 0) {
+    historyList.innerHTML = '<div class="item" style="justify-content: center; color: var(--text-gray);"><div class="item-text">暂无历史记录</div></div>';
+    return;
+  }
+  
+  historyList.innerHTML = safariHistory.slice().reverse().map(item => {
+    const time = new Date(item.time);
+    const timeStr = time.toLocaleDateString() + ' ' + time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const domain = item.url.replace(/^https?:\/\//, '').split('/')[0];
+    return `<div class="item" onclick="openBookmark('${item.url}', '${item.title}')">
+      <div class="item-icon" style="background: var(--primary-blue);">${domain.charAt(0).toUpperCase()}</div>
+      <div class="item-text">${item.title || domain}</div>
+      <div class="item-desc">${timeStr}</div>
+    </div>`;
+  }).join('');
+}
+
+// 显示书签页面
+function showBookmarks() {
+  const bookmarksSubpage = document.getElementById('subpage-bookmarks');
+  if (bookmarksSubpage) {
+    bookmarksSubpage.classList.add('show');
+    updateBookmarksList();
+  }
+}
+
+// 显示历史记录页面
+function showHistory() {
+  const historySubpage = document.getElementById('subpage-history');
+  if (historySubpage) {
+    historySubpage.classList.add('show');
+    updateHistoryList();
+  }
+}
+
+// 更新书签列表
+function updateBookmarksList() {
+  const bookmarksList = document.getElementById('bookmarks-list');
+  if (!bookmarksList) return;
+  
+  bookmarksList.innerHTML = safariBookmarks.map(bookmark => {
+    const domain = bookmark.url.replace(/^https?:\/\//, '').split('/')[0];
+    const initial = bookmark.title ? bookmark.title.charAt(0) : domain.charAt(0);
+    const colors = ['#2932E1', '#008373', '#4285F4', '#FF9500', '#FF2D55', '#5856D6', '#FF3B30', '#34C759'];
+    const color = colors[Math.abs(bookmark.url.split('').reduce((a,b)=>a+b.charCodeAt(0),0)) % colors.length];
+    return `<div class="item" onclick="openBookmark('${bookmark.url}', '${bookmark.title}')">
+      <div class="item-icon" style="background: ${color};">${initial}</div>
+      <div class="item-text">${bookmark.title}</div>
+      <div class="item-arrow">></div>
+    </div>`;
+  }).join('');
+}
+
+// 打开书签
+function openBookmark(url, title) {
+  // 返回浏览器页面
+  goBack();
+  
+  // 打开URL
+  setTimeout(() => {
+    openUrl(url);
+  }, 300);
+}
+
+// 添加书签
+function addBookmark() {
+  const iframe = document.getElementById('safari-iframe');
+  const urlInput = document.getElementById('safari-url-input');
+  
+  if (!iframe.classList.contains('active')) {
+    showNotification('请先打开一个网页');
+    return;
+  }
+  
+  const url = iframe.src || urlInput.value;
+  const title = url.replace(/^https?:\/\//, '').split('/')[0];
+  
+  // 检查是否已存在
+  const exists = safariBookmarks.some(b => b.url === url);
+  if (exists) {
+    showNotification('该网页已在书签中');
+    return;
+  }
+  
+  safariBookmarks.push({ url, title });
+  localStorage.setItem('safariBookmarks', JSON.stringify(safariBookmarks));
+  showNotification('已添加到书签');
+}
+
+// 清除历史记录
+function clearHistory() {
+  safariHistory = [];
+  safariHistoryIndex = -1;
+  localStorage.removeItem('safariHistory');
+  updateHistoryList();
+  showNotification('历史记录已清除');
+}
+
+// 分享页面
+function sharePage() {
+  const iframe = document.getElementById('safari-iframe');
+  if (!iframe.classList.contains('active')) {
+    showNotification('请先打开一个网页');
+    return;
+  }
+  
+  const url = iframe.src;
+  
+  // 复制到剪贴板
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      showNotification('链接已复制到剪贴板');
+    }).catch(() => {
+      showNotification('复制失败');
+    });
+  } else {
+    // 降级方案
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showNotification('链接已复制到剪贴板');
+  }
+}
+
+// 显示Safari菜单
+function showSafariMenu() {
+  // 可以扩展为显示更多选项
+  showNotification('浏览器菜单');
+}
+
+// 显示通知
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+    z-index: 99999;
+    animation: fadeIn 0.3s ease;
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 2000);
+}
+
+// 初始化浏览器
+function initSafari() {
+  // 加载历史记录
+  const savedHistory = localStorage.getItem('safariHistory');
+  if (savedHistory) {
+    safariHistory = JSON.parse(savedHistory);
+    safariHistoryIndex = safariHistory.length - 1;
+  }
+  
+  // 更新历史记录列表
+  updateHistoryList();
+  
+  // 监听iframe加载事件
+  const iframe = document.getElementById('safari-iframe');
+  if (iframe) {
+    iframe.addEventListener('load', function() {
+      try {
+        const url = iframe.contentWindow.location.href;
+        const title = iframe.contentWindow.document.title || url;
+        document.getElementById('safari-url-input').value = url;
+        addToHistory(url, title);
+      } catch (e) {
+        // 跨域限制，无法获取
+      }
+    });
+  }
+}
+
+// 页面加载完成后初始化浏览器
+document.addEventListener('DOMContentLoaded', function() {
+  initSafari();
+});
+
+// 将函数暴露到全局
+window.handleSafariInput = handleSafariInput;
+window.openUrl = openUrl;
+window.safariGoBack = safariGoBack;
+window.safariGoForward = safariGoForward;
+window.safariReload = safariReload;
+window.showBookmarks = showBookmarks;
+window.showHistory = showHistory;
+window.openBookmark = openBookmark;
+window.addBookmark = addBookmark;
+window.clearHistory = clearHistory;
+window.sharePage = sharePage;
+window.showSafariMenu = showSafariMenu;
+
+</script>
+</body>
 
 </html>
+
