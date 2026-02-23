@@ -1,5 +1,3 @@
-**简体中文** | [English](README-EN.md)
-
 # Source UI
 
 一个基于 HTML/CSS/JavaScript 的模拟移动操作系统界面
