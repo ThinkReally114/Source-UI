@@ -43,6 +43,7 @@ python -m http.server 8080
 ## Contributing
 
 Issues and Pull Requests are welcome!
+Special thanks:ERX399
 
 ## License
 
