@@ -45,7 +45,8 @@ python -m http.server 8080
 ## 貢獻
 
 歡迎提交 Issue 和 Pull Request！
-特別鳴謝：ERX399
+
+特別鳴謝：[ERX399](https://github.com/ERX399)
 
 ## 許可證
 
