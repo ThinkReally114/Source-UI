@@ -43,6 +43,7 @@ python -m http.server 8080
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
+特别鸣谢：ERX399
 
 ## 许可证
 
