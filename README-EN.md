@@ -1,3 +1,9 @@
+**English** | [简体中文](README-ZH-CH.md) | [繁體中文](README.md)
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/ThinkReally114/Source-UI/main/server.png" alt="Server Logo" width="200"/>
+
 # Source UI
 
 A simulated mobile operating system interface built with HTML/CSS/JavaScript.
@@ -8,6 +14,7 @@ A simulated mobile operating system interface built with HTML/CSS/JavaScript.
 
 🔗 [Try it now](https://source-ui.520pro.top/)
 
+</div>
 ## Tech Stack
 
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
