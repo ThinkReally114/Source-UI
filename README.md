@@ -1,5 +1,9 @@
 **繁體中文** | [简体中文](README-ZH-CH.md) | [English](README-EN.md)
 
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/ThinkReally114/Source-UI/main/server.png" alt="Server Logo" width="200"/>
+
 # Source UI
 
 一個基於 HTML/CSS/JavaScript 的模擬移動操作系統界面
@@ -9,6 +13,8 @@
 ![Bilibili](https://img.shields.io/badge/📺-Bilibili-pink.svg)
 
 🔗 [現在試試](https://source-ui.520pro.top/)
+
+</div>
 
 ## 技術棧
 
