@@ -50,7 +50,7 @@ python -m http.server 8080
 ## Contributing
 
 Issues and Pull Requests are welcome!
-Special thanks:ERX399
+Special thanks:[ERX399](https://github.com/ERX399)
 
 ## License
 
