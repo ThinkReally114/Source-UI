@@ -12,7 +12,7 @@ A simulated mobile operating system interface built with HTML/CSS/JavaScript.
 ![Stars](https://img.shields.io/github/stars/ThinkReally114/Source-UI?style=social)
 ![Bilibili](https://img.shields.io/badge/📺-Bilibili-pink.svg)
 
-🔗 [Try it now](https://source-ui.520pro.top/)
+🔗 [Try it now](https://nebulacn.qzz.io/)
 
 </div>
 ## Tech Stack
