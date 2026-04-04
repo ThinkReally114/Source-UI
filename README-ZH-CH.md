@@ -12,7 +12,7 @@
 ![Stars](https://img.shields.io/github/stars/ThinkReally114/Source-UI?style=social)
 ![Bilibili](https://img.shields.io/badge/📺-Bilibili-pink.svg)
 
-🔗 [现在试试](https://source-ui.520pro.top/)
+🔗 [现在试试](https://nebulacn.qzz.io/)
 
 </div>
 
