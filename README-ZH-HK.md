@@ -1,4 +1,4 @@
- **简体中文** | [繁體中文](README-ZH-HK.md) | [English](README-EN.md)
+ **繁體中文** | [简体中文](README.md) | [English](README-EN.md)
 
 <div align="center">
 
@@ -6,58 +6,58 @@
 
 # Source UI
 
-一个基于 HTML/CSS/JavaScript 的模拟移动操作系统界面
+一個基於 HTML/CSS/JavaScript 的模擬移動操作系統界面
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Stars](https://img.shields.io/github/stars/ThinkReally114/Source-UI?style=social)
 ![Bilibili](https://img.shields.io/badge/📺-Bilibili-pink.svg)
 
-🔗 [现在试试](https://nebulacn.qzz.io/)
+🔗 [現在試試](https://nebulacn.qzz.io/)
 
 </div>
 
-## 技术栈
+## 技術棧
 
 - **前端**: HTML5, CSS3, JavaScript (原生)
-- **样式**: CSS Variables, Flexbox, Grid
-- **动画**: CSS Transitions, CSS Animations
-- **图标**: SVG 图标
+- **樣式**: CSS Variables, Flexbox, Grid
+- **動畫**: CSS Transitions, CSS Animations
+- **圖標**: SVG
 
-## 本地运行
+## 本地運行
 
 ```bash
-# 克隆仓库
+# 克隆倉庫
 git clone https://github.com/ThinkReally114/Source-UI.git
 
-# 进入目录
+# 進入目錄
 cd Source-UI
 
-# 打开文件（任选其一）
-# 方式1: 直接用浏览器打开
+# 打開文件（任選其一）
+# 方式1: 直接用瀏覽器打開
 open index.html
 
-# 方式2: 使用本地服务器
+# 方式2: 使用本地服務器
 npx serve .
-# 或
+# 或者
 python -m http.server 8080
 ```
 
-## 浏览器
+## 瀏覽器
 
-- ✅ Chrome / Edge / Via (Recommended)
+- ✅ Chrome / Edge / Via (推薦)
 - ✅ Safari
 - ✅ Firefox
 
-## 贡献
+## 貢獻
 
-欢迎提交 Issue 和 Pull Request！
+歡迎提交 Issue 和 Pull Request！
 
 特別鳴謝：[夏(ERX399)](https://github.com/ERX399)
 
-## 许可证
+## 許可證
 
 [MIT License](LICENSE) © 2026 ThinkReally
 
 ---
 
-⭐ 如果这个项目对你有帮助，请给个 Star 支持一下！
+⭐ 如果這個項目對你有用，請給我們個 Star 支持一下！

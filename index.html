@@ -45,27 +45,48 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* GPU硬件加速样式 */
-.gpu-accelerated * {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
+/* GPU硬件加速样式 - 仅在需要时启用 */
+/* 使用 CSS 类触发而非全局应用，避免不必要的 GPU 层 */
 .gpu-accelerated .app,
 .gpu-accelerated .page,
-.gpu-accelerated .subpage,
+.gpu-accelerated .subpage {
+  will-change: transform;
+}
+
 .gpu-accelerated .fluid-cloud,
 .gpu-accelerated .control-center,
 .gpu-accelerated .fullscreen-lyrics {
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
-.gpu-accelerated .icon-grid,
-.gpu-accelerated .dock,
-.gpu-accelerated .group,
-.gpu-accelerated .item {
-  will-change: transform;
+.gpu-accelerated .app.show,
+.gpu-accelerated .page.show,
+.gpu-accelerated .subpage.show {
+  will-change: auto;
+}
+
+/* 使用 contain 提升布局隔离性，减少重排范围 */
+.page, .subpage {
+  contain: layout style;
+}
+
+.app {
+  contain: layout style paint;
+}
+
+.icon-grid {
+  contain: layout style;
+}
+
+.group {
+  contain: layout style;
+}
+
+/* content-visibility 让屏幕外内容跳过渲染 */
+.page:not(.show),
+.subpage:not(.show) {
+  content-visibility: hidden;
+  contain-intrinsic-size: 100% 100%;
 }
 
 /* 高级材质 - 模糊特效 */
@@ -75,6 +96,16 @@
 .advanced-materials .fluid-cloud-expanded {
   backdrop-filter: blur(30px) saturate(1.8);
   -webkit-backdrop-filter: blur(30px) saturate(1.8);
+}
+
+/* 高级材质启用时恢复图标和Dock模糊 */
+body.advanced-materials .icon {
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+}
+body.advanced-materials #dock {
+  backdrop-filter: blur(25px) saturate(1.8);
+  -webkit-backdrop-filter: blur(25px) saturate(1.8);
 }
 
 /* 关闭高级材质时移除模糊 */
@@ -577,7 +608,7 @@ body.dark-mode .shortcut-text {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://imgapi.siiway.top/image') center/cover;
+  /* 背景由 random.js 通过 data-random-bg 动态设置 */
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -587,7 +618,6 @@ body.dark-mode .shortcut-text {
   border-radius: 28px;
   transition: opacity 0.5s var(--ios-ease), transform 0.6s var(--ios-spring);
   cursor: grab;
-  will-change: opacity, transform;
 }
 
 #lock.unlocking {
@@ -617,7 +647,7 @@ body.dark-mode .shortcut-text {
   opacity: 0.8; 
   cursor: pointer;
   padding: 20px;
-  transition: all 0.3s var(--ios-smooth);
+  transition: opacity, transform 0.3s var(--ios-smooth);
   text-shadow: 0 1px 5px rgba(0,0,0,0.5);
 }
 
@@ -627,14 +657,13 @@ body.dark-mode .shortcut-text {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://imgapi.siiway.top/image') center/cover;
+  /* 背景由 random.js 通过 data-random-bg 动态设置 */
   padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 24px) calc(var(--safe-bottom) + 120px) calc(var(--safe-left) + 24px);
   z-index: 1;
   opacity: 0;
   transform: scale(1.15);
   border-radius: 28px;
   transition: opacity 0.6s var(--ios-ease), transform 0.7s var(--ios-spring);
-  will-change: opacity, transform;
 }
 
 #desktop.show {
@@ -689,13 +718,13 @@ body.dark-mode .shortcut-text {
   height: 60px;
   border-radius: 14px;
   background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(20px) saturate(1.8);
+  /* backdrop-filter 仅高级材质时通过 .advanced-materials .icon 启用 */
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
   color: #fff;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), background 0.15s var(--ios-bounce);
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   overflow: hidden;
 }
@@ -732,7 +761,7 @@ body.dark-mode .shortcut-text {
   max-width: 400px;
   height: 80px;
   background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(25px) saturate(1.8);
+  /* backdrop-filter 仅高级材质时通过 .advanced-materials #dock 启用 */
   border-radius: 30px;
   z-index: 101;
   display: flex;
@@ -741,7 +770,6 @@ body.dark-mode .shortcut-text {
   padding: 0 20px;
   opacity: 0;
   transition: opacity 0.5s var(--ios-smooth), transform 0.6s var(--ios-spring);
-  will-change: opacity, transform;
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
@@ -807,7 +835,6 @@ body.dark-mode .shortcut-text {
   z-index: 90;
   pointer-events: none;
   transition: background 0.3s var(--ios-smooth), backdrop-filter 0.3s var(--ios-smooth);
-  will-change: backdrop-filter, background;
   border-radius: 28px;
 }
 
@@ -868,7 +895,7 @@ body.dark-mode .shortcut-text {
   min-width: 120px;
   max-width: 220px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform, opacity, background 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation: fluidCloudFloat 3s ease-in-out infinite;
   opacity: 1;
   transform: scale(1);
@@ -900,6 +927,13 @@ body.dark-mode .shortcut-text {
   50% {
     transform: translateY(-2px);
   }
+}
+
+/* 暂停隐藏状态下的动画，减少空闲CPU/GPU开销 */
+.fluid-cloud:not(.show) .fluid-cloud-collapsed {
+  animation-play-state: paused;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .fluid-cloud-icon {
@@ -972,7 +1006,7 @@ body.dark-mode .shortcut-text {
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform, opacity, background 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform-origin: top center;
   opacity: 0;
   pointer-events: none;
@@ -1057,7 +1091,7 @@ body.dark-mode .shortcut-text {
   font-size: 12px;
   color: #fff;
   cursor: pointer;
-  transition: all 0.2s var(--ios-smooth);
+  transition: transform 0.2s var(--ios-smooth);
   border: none;
   outline: none;
 }
@@ -1159,7 +1193,6 @@ body.dark-mode .shortcut-text {
   opacity: 0;
   pointer-events: none;
   transition: transform 0.5s var(--ios-spring), opacity 0.3s var(--ios-smooth);
-  will-change: transform, opacity;
 }
 
 .app.show {
@@ -1191,7 +1224,7 @@ body.dark-mode .shortcut-text {
   opacity: 0;
   visibility: hidden;
   transform: translateX(20px);
-  transition: opacity 0.4s var(--ios-ease), transform 0.4s var(--ios-ease), visibility 0.4s, background 0.5s var(--ios-smooth);
+  transition: opacity 0.4s var(--ios-ease), transform 0.4s var(--ios-ease), background 0.5s var(--ios-smooth);
   background: var(--bg-gray);
 }
 
@@ -1219,7 +1252,7 @@ body.dark-mode .shortcut-text {
   transform: translateX(100%);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s var(--ios-ease), background 0.5s var(--ios-smooth);
+  transition: transform, opacity 0.4s var(--ios-ease), background 0.5s var(--ios-smooth);
   z-index: 50;
 }
 
@@ -1281,7 +1314,7 @@ body.dark-mode .shortcut-text {
   background: #e5e5ea;
   border-radius: 15px;
   position: relative;
-  transition: all 0.3s var(--ios-bounce);
+  transition: background 0.3s var(--ios-bounce);
   cursor: pointer;
 }
 
@@ -1296,7 +1329,7 @@ body.dark-mode .shortcut-text {
   top: 2px;
   left: 2px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: all 0.3s var(--ios-bounce);
+  transition: left 0.3s var(--ios-bounce);
 }
 .item-switch.active::after { left: 22px; }
 
@@ -1364,7 +1397,7 @@ body.dark-mode .shortcut-text {
   font-weight: 400;
   cursor: pointer;
   margin: 0 auto;
-  transition: all 0.2s var(--ios-bounce);
+  transition: transform, background 0.2s var(--ios-bounce);
   -webkit-touch-callout: none;
 }
 .dial-btn:active { 
@@ -1385,7 +1418,7 @@ body.dark-mode .shortcut-text {
   color: #fff;
   margin: 20px auto 0;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform, background 0.3s var(--ios-bounce);
 }
 .call-btn:active { transform: scale(0.95); }
 
@@ -1468,7 +1501,7 @@ body.dark-mode .shortcut-text {
   font-size: 24px;
   color: #fff;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
 }
 .play-btn:active { transform: scale(0.95); }
 
@@ -1496,14 +1529,14 @@ body.dark-mode .shortcut-text {
   color: #fff;
   font-size: 18px;
   cursor: pointer;
-  transition: all 0.2s var(--ios-bounce);
+  transition: transform 0.1s var(--ios-bounce), opacity 0.1s var(--ios-bounce);
 }
 .camera-top-btn.active { color: #FFD60A; }
 
 .camera-viewfinder {
   width: 100%;
   height: 100%;
-  background: url('https://imgapi.siiway.top/image') center/cover;
+  /* 背景由 random.js 动态设置 */
   position: relative;
   display: flex;
   align-items: center;
@@ -1517,7 +1550,7 @@ body.dark-mode .shortcut-text {
   position: absolute;
   opacity: 0;
   transform: scale(1.5);
-  transition: all 0.4s var(--ios-bounce);
+  transition: transform 0.2s var(--ios-bounce), opacity 0.2s var(--ios-bounce);
   pointer-events: none;
 }
 .focus-box.show { opacity: 1; transform: scale(1); }
@@ -1558,7 +1591,7 @@ body.dark-mode .shortcut-text {
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
 }
 .camera-mode.active { color: #fff; font-size: 17px; font-weight: 600; transform: scale(1.1); }
 .camera-capture-area {
@@ -1570,10 +1603,12 @@ body.dark-mode .shortcut-text {
   width: 50px;
   height: 50px;
   border-radius: 12px;
-  background: url('https://imgapi.siiway.top/image') center/cover;
+  /* 背景由 random.js 动态设置 */
+  background-size: cover;
+  background-position: center;
   border: 2px solid rgba(255,255,255,0.3);
   cursor: pointer;
-  transition: all 0.2s var(--ios-bounce);
+  transition: background, border-color 0.2s var(--ios-bounce);
 }
 .camera-capture-btn {
   width: 70px;
@@ -1582,7 +1617,7 @@ body.dark-mode .shortcut-text {
   background: #fff;
   padding: 4px;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
 }
 .camera-capture-btn-inner { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #000; }
 .camera-switch-btn {
@@ -1597,7 +1632,7 @@ body.dark-mode .shortcut-text {
   color: #fff;
   font-size: 20px;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
 }
 
 #page-photo { padding: 0; }
@@ -1620,7 +1655,7 @@ body.dark-mode .shortcut-text {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 3px;
   z-index: 10001;
-  transition: all 0.4s var(--ios-bounce);
+  transition: transform 0.2s var(--ios-bounce), opacity 0.2s var(--ios-bounce);
   cursor: pointer;
 }
 .app.show ~ .home-indicator { background: rgba(0, 0, 0, 0.9); }
@@ -1640,7 +1675,7 @@ body.dark-mode .shortcut-text {
   cursor: pointer;
   font-size: 16px;
   color: #333;
-  transition: all 0.2s var(--ios-bounce);
+  transition: transform 0.1s var(--ios-bounce), opacity 0.1s var(--ios-bounce);
   z-index: 101;
 }
 .close-btn:active { transform: translateY(-50%) scale(0.9); }
@@ -1661,7 +1696,6 @@ body.dark-mode .shortcut-text {
     opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: backdrop-filter, opacity, background;
 }
 
 /* 【修复】控制面板 - 同步渐变 */
@@ -1683,7 +1717,6 @@ body.dark-mode .shortcut-text {
     transform 0.5s cubic-bezier(0.25, 1, 0.25, 1),
     backdrop-filter 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, backdrop-filter, background;
   overflow-y: auto;
 }
 
@@ -1746,7 +1779,7 @@ body.dark-mode .shortcut-text {
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
 }
 
 .control-item:active { transform: scale(0.9); }
@@ -1759,7 +1792,7 @@ body.dark-mode .shortcut-text {
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   overflow: hidden;
 }
@@ -1875,7 +1908,7 @@ body.dark-mode .shortcut-text {
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  transition: all 0.3s var(--ios-bounce);
+  transition: transform 0.15s var(--ios-bounce), opacity 0.15s var(--ios-bounce);
 }
 
 .shortcut-item:active { transform: scale(0.98); }
@@ -1970,7 +2003,7 @@ body.dark-mode .shortcut-text {
   </div>
 
   <!-- 上滑解锁屏幕 -->
-  <div id="lock" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://imgapi.siiway.top/image') center/cover; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff;">
+  <div id="lock" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center;" data-random-bg="v z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff;">
     <div style="font-size: 68px; font-weight: 700; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">10:30</div>
     <div style="font-size: 17px; font-weight: 600; margin-bottom: 40px; text-shadow: 0 1px 5px rgba(0,0,0,0.3);">周二 2月18日</div>
     <div style="font-size: 15px; font-weight: 500; opacity: 0.9; margin-bottom: 40px; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">上滑解锁</div>
@@ -2158,7 +2191,7 @@ body.dark-mode .shortcut-text {
     </div>
   </div>
 
-  <div id="desktop">
+  <div id="desktop" data-random-bg="v">
     <div class="icon-grid">
       <div class="icon-item" data-app="phone"><div class="icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div><div class="icon-label">电话</div></div>
       <div class="icon-item" data-app="msg"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div><div class="icon-label">信息</div></div>
@@ -2418,7 +2451,7 @@ body.dark-mode .shortcut-text {
           <div class="camera-top-btn" id="night-btn"><svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M9 2c-1.05 0-2.05.16-3 .46 1.69 1.24 2.79 3.24 2.79 5.54 0 3.87-3.13 7-7 7-.71 0-1.39-.11-2.03-.3C2.6 19.08 6.27 22 10.5 22c5.24 0 9.5-4.25 9.5-9.5S15.74 2 10.5 2c-.51 0-1.01.04-1.5.11V2z"/></svg></div>
           <div class="camera-top-btn" id="grid-btn">▦</div>
         </div>
-        <div class="camera-viewfinder" id="viewfinder" style="width: 100%; height: calc(100% - 120px);">
+        <div class="camera-viewfinder" id="viewfinder" data-random-bg="v" style="width: 100%; height: calc(100% - 120px);">
           <div class="focus-box" id="focus-box"></div>
           <div class="grid-lines" id="grid-lines"></div>
         </div>
@@ -2431,7 +2464,7 @@ body.dark-mode .shortcut-text {
             <div class="camera-mode">人像</div>
           </div>
           <div class="camera-capture-area">
-            <div class="camera-album-btn"></div>
+            <div class="camera-album-btn" data-random-bg="v"></div>
             <div class="camera-capture-btn" id="capture-btn"><div class="camera-capture-btn-inner"></div></div>
             <div class="camera-switch-btn" id="switch-btn">⟳</div>
           </div>
@@ -2652,10 +2685,14 @@ body.dark-mode .shortcut-text {
             <div class="item-text">开启调试</div>
             <div class="item-switch"></div>
           </div>
+      <div class="item" id="developer-boot-switch" onclick="toggleBootSkip()">
+        <div class="item-text">跳过开机动画</div>
+        <div class="item-switch active" id="boot-skip-switch"></div>
+      </div>
           <div class="item-desc" style="padding: 8px 20px; font-size: 12px; color: var(--text-gray); background: transparent;">开启后在控制台显示详细调试信息</div>
         </div>
         <div class="group">
-          <div class="item" id="developer-fps-switch" onclick="console.log('FPS switch clicked'); toggleFPSDisplay();">
+      <div class="item" id="developer-fps-switch" onclick="console.log('FPS switch clicked'); toggleFPSDisplay();">
             <div class="item-text">显示实时帧率</div>
             <div class="item-switch"></div>
           </div>
@@ -2702,12 +2739,100 @@ body.dark-mode .shortcut-text {
 </div>
 
 <script>
-// 全局变量
+// ==================== 性能优化工具函数 ====================
+
+// 节流函数：限制函数执行频率（适用于 scroll, resize, mousemove 等高频事件）
+function throttle(func, wait) {
+  let timeout = null;
+  let previous = 0;
+  return function(...args) {
+    const now = Date.now();
+    const remaining = wait - (now - previous);
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      func.apply(this, args);
+    } else if (!timeout) {
+      timeout = setTimeout(() => {
+        previous = Date.now();
+        timeout = null;
+        func.apply(this, args);
+      }, remaining);
+    }
+  };
+}
+
+// 防抖函数：延迟执行，只执行最后一次（适用于 input, search 等）
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+// requestAnimationFrame 节流（最适合动画相关的高频事件）
+function rafThrottle(func) {
+  let rafId = null;
+  return function(...args) {
+    if (rafId === null) {
+      rafId = requestAnimationFrame(() => {
+        func.apply(this, args);
+        rafId = null;
+      });
+    }
+  };
+}
+
+// DOM 查询缓存
+const domCache = new Map();
+function getCachedElement(selector) {
+  if (!domCache.has(selector)) {
+    domCache.set(selector, document.querySelector(selector));
+  }
+  return domCache.get(selector);
+}
+
+// 批量 DOM 更新（减少重排）
+function batchDOMUpdate(updates) {
+  requestAnimationFrame(() => {
+    updates.forEach(update => update());
+  });
+}
+
+// ==================== 全局变量 ====================
 let lock, desktop;
 
 // 等待DOM加载完成
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM加载完成');
+  
+  // 设置随机背景图（使用 random.js API）
+  setTimeout(function() {
+    if (typeof getRandomPicV === 'function') {
+      const bgUrl = getRandomPicV();
+      const bgElements = ['lock', 'desktop', 'viewfinder'];
+      bgElements.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.backgroundImage = `url('${bgUrl}')`;
+          el.style.backgroundSize = 'cover';
+          el.style.backgroundPosition = 'center';
+        }
+      });
+      // 相册按钮
+      const albumBtn = document.querySelector('.camera-album-btn');
+      if (albumBtn) {
+        albumBtn.style.backgroundImage = `url('${bgUrl}')`;
+        albumBtn.style.backgroundSize = 'cover';
+        albumBtn.style.backgroundPosition = 'center';
+      }
+      console.log('随机背景已设置:', bgUrl);
+    }
+  }, 100);
   
   // 禁用右键菜单
   document.addEventListener('contextmenu', function(e) {
@@ -2733,14 +2858,19 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('[Materials] Advanced materials disabled');
   }
   
-  // 开机动画控制
+  // 开机动画控制 - 支持跳过
   const bootScreen = document.getElementById('boot-screen');
+  const bootSkipEnabled = localStorage.getItem('bootSkip') !== 'false';
   if (bootScreen) {
-    // 4秒后隐藏开机动画
-    setTimeout(function() {
-      bootScreen.classList.add('hidden');
-      console.log('开机动画结束');
-    }, 4000);
+    if (bootSkipEnabled) {
+      bootScreen.style.display = 'none';
+      console.log('开机动画已跳过');
+    } else {
+      setTimeout(function() {
+        bootScreen.classList.add('hidden');
+        console.log('开机动画结束');
+      }, 4000);
+    }
   }
   
   // 获取元素
@@ -2908,7 +3038,12 @@ function updateTime() {
   if (statusTime) statusTime.innerText = timeText;
 }
 setInterval(updateTime, 1000);
-updateTime();
+  updateTime();
+
+  // 页面不可见时降低定时器频率（通过 visibilitychange）
+  document.addEventListener('visibilitychange', function() {
+    // 页面隐藏时无需额外操作，浏览器会自动节流 setInterval
+  });
 
 function resetAllPages() {
   pages.forEach(page => page.classList.remove('show', 'slide-left'));
@@ -3162,7 +3297,8 @@ document.querySelectorAll('.item-switch').forEach(switchEl => {
   if (parentItem && (
     parentItem.id === 'developer-debug-switch' ||
     parentItem.id === 'developer-fps-switch' ||
-    parentItem.id === 'developer-performance-switch'
+    parentItem.id === 'developer-performance-switch' ||
+    parentItem.id === 'developer-boot-switch'
   )) {
     return; // 跳过这些开关
   }
@@ -3729,8 +3865,9 @@ function setupSlider(slider) {
     const fill = slider.querySelector('.slider-fill');
     if (fill) fill.style.width = (percent * 100) + '%';
   }
-  document.addEventListener('mousemove', updateSlider);
-  document.addEventListener('touchmove', updateSlider, { passive: true });
+  // 使用节流优化高频滑块更新（约16ms/次）
+  document.addEventListener('mousemove', throttle(updateSlider, 16));
+  document.addEventListener('touchmove', throttle(updateSlider, 16), { passive: true });
   document.addEventListener('mouseup', () => isDragging = false);
   document.addEventListener('touchend', () => isDragging = false);
 }
@@ -5801,6 +5938,24 @@ function submitDeveloperPassword() {
   }
 }
 
+// 切换跳过开机动画
+function toggleBootSkip() {
+  const bootSkipSwitch = document.getElementById('boot-skip-switch');
+  if (!bootSkipSwitch) return;
+  const isActive = bootSkipSwitch.classList.contains('active');
+  if (isActive) {
+    bootSkipSwitch.classList.remove('active');
+    localStorage.setItem('bootSkip', 'false');
+    console.log('开机动画跳过已关闭');
+    showNotification('开机动画跳过已关闭');
+  } else {
+    bootSkipSwitch.classList.add('active');
+    localStorage.setItem('bootSkip', 'true');
+    console.log('开机动画跳过已开启');
+    showNotification('开机动画跳过已开启');
+  }
+}
+
 // 更新开发者选项开关状态
 function updateDeveloperSwitches() {
   const debugSwitch = document.querySelector('#developer-debug-switch .item-switch');
@@ -5824,6 +5979,12 @@ function updateDeveloperSwitches() {
   if (fpsSwitch) {
     fpsSwitch.classList.toggle('active', isFPSDisplayEnabled);
   }
+  const bootSkipSwitch = document.getElementById('boot-skip-switch');
+  if (bootSkipSwitch) {
+    const bootSkipEnabled = localStorage.getItem('bootSkip') !== 'false';
+    bootSkipSwitch.classList.toggle('active', bootSkipEnabled);
+  }
+
   if (performanceSwitch) {
     performanceSwitch.classList.toggle('active', isPerformanceMetricsEnabled);
   }
@@ -6025,7 +6186,16 @@ function updateFPS() {
   
   // 更新显示
   if (fpsDisplayElement) {
+    // 计算3秒平均帧（基于最近3秒的帧数据）
+    const threeSecondsAgo = now - 3000;
+    const recentFrames = fpsFrameHistory.filter(f => f.time > threeSecondsAgo);
+    let avg3sFPS = currentFPS;
+    if (recentFrames.length > 0) {
+      const avgFrameTime3s = recentFrames.reduce((a, b) => a + b.frameTime, 0) / recentFrames.length;
+      avg3sFPS = Math.round(1000 / avgFrameTime3s);
+    }
     let displayText = `${currentFPS} FPS`;
+    displayText += `<br><span style="font-size: 10px; color: #00AAFF;">3sAvg: ${avg3sFPS}</span>`;
     
     // 如果开启了性能参数，计算并显示更多数据
     if (isPerformanceMetricsEnabled && fpsFrameHistory.length > 0) {
@@ -6094,6 +6264,7 @@ window.initDeveloperOptions = initDeveloperOptions;
 
 // 暴露开发者选项密码保护函数到全局
 window.openDeveloperOptions = openDeveloperOptions;
+window.toggleBootSkip = toggleBootSkip;
 window.showDeveloperPage = showDeveloperPage;
 window.showPasswordDialog = showPasswordDialog;
 window.closePasswordDialog = closePasswordDialog;
@@ -6224,6 +6395,25 @@ window.calculateCPUUsage = calculateCPUUsage;
 window.calculateGPUUsage = calculateGPUUsage;
 window.measureNetworkLatency = measureNetworkLatency;
 
+// ==================== 背景图API配置 ====================
+// 外部背景服务接入配置
+window.TEXT_CONFIG = {
+    backgroundApi: 'https://img.399520.xyz'
+};
+
+// 背景图核心逻辑 - 对 img.399520.xyz 的特殊处理
+(function() {
+    const originalBackgroundApi = window.TEXT_CONFIG.backgroundApi;
+    if (originalBackgroundApi && originalBackgroundApi.includes('img.399520.xyz')) {
+        const width = 1600;
+        const height = 900;
+        const randomId = Math.floor(Math.random() * 1000);
+        window.TEXT_CONFIG.backgroundApi = originalBackgroundApi + '/' + width + '/' + height + '?random=' + randomId + '&_t=' + Date.now();
+    }
+})();
+
 </script>
+<!-- 外部背景服务脚本 -->
+<script src="https://img.399520.xyz/random.js"></script>
 </body>
 </html>
