@@ -1982,3 +1982,64 @@ body.dark-mode .shortcut-text {
   visibility: hidden;
   pointer-events: none;
 }
+
+
+/* ==================== Performance & Power Saving ==================== */
+/* 尊重系统“减少动态效果”设置，显著降低动画/过渡功耗。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 低性能/省电模式：通过 JS 或开发者选项给 body 添加类即可生效。 */
+body.low-performance *,
+body.power-saving * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.12s !important;
+}
+
+body.low-performance .fluid-cloud-wave,
+body.power-saving .fluid-cloud-wave,
+body.low-performance .camera-grid-lines,
+body.power-saving .camera-grid-lines {
+  display: none !important;
+}
+
+body.low-performance .blur,
+body.low-performance .control-center-bg,
+body.low-performance .fluid-cloud-collapsed,
+body.low-performance .fluid-cloud-expanded,
+body.low-performance .fullscreen-lyrics,
+body.power-saving .blur,
+body.power-saving .control-center-bg,
+body.power-saving .fluid-cloud-collapsed,
+body.power-saving .fluid-cloud-expanded,
+body.power-saving .fullscreen-lyrics {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+body.low-performance .app,
+body.low-performance .page,
+body.low-performance .subpage,
+body.low-performance .fluid-cloud,
+body.low-performance .control-center,
+body.power-saving .app,
+body.power-saving .page,
+body.power-saving .subpage,
+body.power-saving .fluid-cloud,
+body.power-saving .control-center {
+  will-change: auto !important;
+}
+
+/* 页面不可见时由浏览器暂停渲染，配合 JS visibilitychange 降低后台消耗。 */
+
+

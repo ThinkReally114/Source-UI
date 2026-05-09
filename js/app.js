@@ -63,6 +63,30 @@ function batchDOMUpdate(updates) {
   });
 }
 
+// 运行时性能模式：自动识别省流量/低内存设备，也支持 localStorage.powerSaving 手动开启。
+function initRuntimePerformanceMode() {
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  const lowMemory = !!(navigator.deviceMemory && navigator.deviceMemory <= 4);
+  const manualPowerSaving = localStorage.getItem('powerSaving') === 'true';
+  const powerSaving = saveData || lowMemory || manualPowerSaving;
+
+  document.body.classList.toggle('power-saving', powerSaving);
+  document.body.classList.toggle('low-performance', powerSaving);
+
+  if (powerSaving) {
+    // 省电模式下优先降低 GPU 层和昂贵模糊材质。
+    document.body.classList.remove('gpu-accelerated', 'advanced-materials');
+  }
+
+  return powerSaving;
+}
+
+function isVisualEffectsEnabled() {
+  return document.body.classList.contains('advanced-materials') &&
+    !document.body.classList.contains('power-saving') &&
+    !document.body.classList.contains('low-performance');
+}
+
 // ==================== 全局变量 ====================
 let lock, desktop;
 
@@ -100,21 +124,26 @@ document.addEventListener('DOMContentLoaded', function() {
     return false;
   });
   
-  // 初始化GPU硬件加速设置
-  const gpuAccelerationEnabled = localStorage.getItem('gpuAcceleration') !== 'false';
+  // 初始化运行时性能模式
+  const runtimePowerSaving = initRuntimePerformanceMode();
+
+  // 初始化GPU硬件加速设置：省电模式下默认关闭，避免长时间占用合成层。
+  const gpuAccelerationEnabled = !runtimePowerSaving && localStorage.getItem('gpuAcceleration') !== 'false';
   if (gpuAccelerationEnabled) {
     document.body.classList.add('gpu-accelerated');
     console.log('[GPU] Hardware acceleration enabled');
   } else {
+    document.body.classList.remove('gpu-accelerated');
     console.log('[GPU] Hardware acceleration disabled');
   }
   
-  // 初始化高级材质设置
-  const advancedMaterialsEnabled = localStorage.getItem('advancedMaterials') !== 'false';
+  // 初始化高级材质设置：省电模式下默认关闭重模糊。
+  const advancedMaterialsEnabled = !runtimePowerSaving && localStorage.getItem('advancedMaterials') !== 'false';
   if (advancedMaterialsEnabled) {
     document.body.classList.add('advanced-materials');
     console.log('[Materials] Advanced materials enabled');
   } else {
+    document.body.classList.remove('advanced-materials');
     console.log('[Materials] Advanced materials disabled');
   }
   
@@ -287,23 +316,52 @@ window.unlockScreen = function() {
   }
 }
 
+const lockTimeElement = document.querySelector('.lock-time');
+const statusTimeElement = document.querySelector('#status .time');
+let timeUpdateTimer = null;
+
 function updateTime() {
   const t = new Date();
   const h = String(t.getHours()).padStart(2, '0');
   const m = String(t.getMinutes()).padStart(2, '0');
   const timeText = h + ':' + m;
-  const lockTime = document.querySelector('.lock-time');
-  const statusTime = document.querySelector('#status .time');
-  if (lockTime) lockTime.innerText = timeText;
-  if (statusTime) statusTime.innerText = timeText;
+  if (lockTimeElement) lockTimeElement.innerText = timeText;
+  if (statusTimeElement) statusTimeElement.innerText = timeText;
 }
-setInterval(updateTime, 1000);
+
+function scheduleTimeUpdate() {
+  clearTimeout(timeUpdateTimer);
+  if (document.hidden) return;
+
   updateTime();
 
-  // 页面不可见时降低定时器频率（通过 visibilitychange）
-  document.addEventListener('visibilitychange', function() {
-    // 页面隐藏时无需额外操作，浏览器会自动节流 setInterval
-  });
+  // 对齐到下一分钟再更新，避免每秒无意义刷新 DOM。
+  const now = new Date();
+  const delay = Math.max(1000, (60 - now.getSeconds()) * 1000 - now.getMilliseconds());
+  timeUpdateTimer = setTimeout(scheduleTimeUpdate, delay);
+}
+
+scheduleTimeUpdate();
+
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    clearTimeout(timeUpdateTimer);
+    if (fpsAnimationId) {
+      cancelAnimationFrame(fpsAnimationId);
+      fpsAnimationId = null;
+    }
+    stopNetworkLatencyMonitoring();
+  } else {
+    scheduleTimeUpdate();
+    if (isFPSDisplayEnabled && !fpsAnimationId) {
+      fpsLastTime = 0;
+      fpsAnimationId = requestAnimationFrame(updateFPS);
+    }
+    if (isPerformanceMetricsEnabled) {
+      startNetworkLatencyMonitoring();
+    }
+  }
+});
 
 function resetAllPages() {
   pages.forEach(page => page.classList.remove('show', 'slide-left'));
@@ -665,13 +723,18 @@ function openControlCenter() {
     fluidCloud.classList.add('in-control-center');
   }
   
-  // 设置控制中心背景模糊效果
+  // 设置控制中心背景效果：低性能/省电模式下避免昂贵 backdrop-filter。
   const ccBg = document.getElementById('control-center-bg');
   if (ccBg) {
     ccBg.style.setProperty('opacity', '1', 'important');
     ccBg.style.setProperty('background', 'rgba(0,0,0,0.5)', 'important');
-    ccBg.style.setProperty('backdrop-filter', 'blur(40px) saturate(1.8)', 'important');
-    ccBg.style.setProperty('-webkit-backdrop-filter', 'blur(40px) saturate(1.8)', 'important');
+    if (isVisualEffectsEnabled()) {
+      ccBg.style.setProperty('backdrop-filter', 'blur(24px) saturate(1.4)', 'important');
+      ccBg.style.setProperty('-webkit-backdrop-filter', 'blur(24px) saturate(1.4)', 'important');
+    } else {
+      ccBg.style.setProperty('backdrop-filter', 'none', 'important');
+      ccBg.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+    }
   }
 }
 
@@ -712,16 +775,16 @@ document.addEventListener('mousedown', (e) => {
 });
 
 // 鼠标移动
-document.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', rafThrottle((e) => {
   if (!isMouseDragging) return;
   const deltaY = e.clientY - mouseStartY;
   const deltaX = Math.abs(e.clientX - mouseStartX);
   
-  // 如果向下拖动，可以添加视觉反馈
+  // 如果向下拖动，可以添加控制中心的预览效果
   if (deltaY > 0 && deltaX < 100) {
     // 可以在这里添加控制中心的预览效果
   }
-});
+}));
 
 // 鼠标释放
 document.addEventListener('mouseup', (e) => {
@@ -1039,11 +1102,11 @@ if (settingBrightnessSlider && brightnessValue) {
     updateBrightness(e);
   });
   
-  document.addEventListener('mousemove', function(e) {
+  document.addEventListener('mousemove', rafThrottle(function(e) {
     if (isDragging) {
       updateBrightness(e);
     }
-  });
+  }));
   
   document.addEventListener('mouseup', function() {
     isDragging = false;
@@ -1076,11 +1139,11 @@ if (controlBrightnessSlider) {
     updateControlBrightness(e);
   });
   
-  document.addEventListener('mousemove', function(e) {
+  document.addEventListener('mousemove', rafThrottle(function(e) {
     if (isDragging) {
       updateControlBrightness(e);
     }
-  });
+  }));
   
   document.addEventListener('mouseup', function() {
     isDragging = false;
@@ -1125,9 +1188,9 @@ function setupSlider(slider) {
     const fill = slider.querySelector('.slider-fill');
     if (fill) fill.style.width = (percent * 100) + '%';
   }
-  // 使用节流优化高频滑块更新（约16ms/次）
-  document.addEventListener('mousemove', throttle(updateSlider, 16));
-  document.addEventListener('touchmove', throttle(updateSlider, 16), { passive: true });
+  // 使用节流优化高频滑块更新（约30fps，降低拖动时主线程压力）
+  document.addEventListener('mousemove', throttle(updateSlider, 32));
+  document.addEventListener('touchmove', throttle(updateSlider, 32), { passive: true });
   document.addEventListener('mouseup', () => isDragging = false);
   document.addEventListener('touchend', () => isDragging = false);
 }
@@ -2366,7 +2429,8 @@ if (musicImportLrcBtn && musicLrcInput) {
 
 // 解析LRC歌词文件
 function parseLRC(lrcText) {
-  const lines = lrcText.split('\n');
+  const lines = lrcText.split('
+');
   const lyrics = [];
   
   const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/;
@@ -2537,26 +2601,35 @@ if (musicLrcInput) {
 
 // 在音频时间更新时同步歌词
 if (musicAudio) {
+  let lastMusicUIUpdate = 0;
+  let lastLyricUpdate = 0;
   musicAudio.addEventListener('timeupdate', function() {
-    // 原有的进度更新代码...
-    if (musicProgressFill && musicAudio.duration) {
-      const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
-      musicProgressFill.style.width = percent + '%';
+    const now = performance.now();
+    const currentTime = musicAudio.currentTime;
+
+    // 进度条/时间显示最多约4次/秒，避免音频事件频繁触发导致布局抖动。
+    if (now - lastMusicUIUpdate >= 250) {
+      lastMusicUIUpdate = now;
+      if (musicProgressFill && musicAudio.duration) {
+        const percent = (currentTime / musicAudio.duration) * 100;
+        musicProgressFill.style.width = percent + '%';
+      }
+      if (musicCurrentTime) {
+        musicCurrentTime.textContent = formatMusicTime(currentTime);
+      }
+      if (fullscreenCurrentTime && currentTime) {
+        fullscreenCurrentTime.textContent = formatMusicTime(currentTime);
+      }
+      if (fullscreenDuration && musicAudio.duration) {
+        fullscreenDuration.textContent = formatMusicTime(musicAudio.duration);
+      }
     }
-    if (musicCurrentTime) {
-      musicCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+
+    // 歌词同步最多约10次/秒，兼顾流畅和功耗。
+    if (now - lastLyricUpdate >= 100) {
+      lastLyricUpdate = now;
+      updateLyrics(currentTime);
     }
-    
-    // 更新全屏歌词的时间显示
-    if (fullscreenCurrentTime && musicAudio.currentTime) {
-      fullscreenCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
-    }
-    if (fullscreenDuration && musicAudio.duration) {
-      fullscreenDuration.textContent = formatMusicTime(musicAudio.duration);
-    }
-    
-    // 更新歌词
-    updateLyrics(musicAudio.currentTime);
   });
 }
 
@@ -3406,9 +3479,13 @@ function createFPSDisplay() {
 }
 
 // 更新FPS显示
+let lastFPSDomUpdate = 0;
+let lastFPSHeavyCalc = 0;
+let cachedFPSDisplayText = '';
+
 function updateFPS() {
-  if (!isFPSDisplayEnabled) {
-    console.log('[FPS] updateFPS skipped - not enabled');
+  if (!isFPSDisplayEnabled || document.hidden) {
+    fpsAnimationId = null;
     return;
   }
 
@@ -3418,7 +3495,6 @@ function updateFPS() {
   if (fpsLastTime === 0) {
     fpsLastTime = now;
     fpsAnimationId = requestAnimationFrame(updateFPS);
-    console.log('[FPS] First frame, time initialized');
     return;
   }
 
@@ -3428,24 +3504,23 @@ function updateFPS() {
   // 计算当前FPS
   const currentFPS = Math.round(1000 / delta);
 
-  // 每60帧输出一次调试信息
-  if (fpsFrameHistory.length % 60 === 0) {
-    console.log('[FPS] Current FPS:', currentFPS, 'Element exists:', !!fpsDisplayElement);
-  }
-  
-  // 添加到历史记录（保留最近30秒的数据，假设60fps，约1800帧）
+  // 添加到历史记录（保留最近10秒的数据，降低统计计算和内存压力）
   fpsFrameHistory.push({
     fps: currentFPS,
     time: now,
     frameTime: delta
   });
   
-  // 清理超过30秒的数据
-  const thirtySecondsAgo = now - 30000;
-  fpsFrameHistory = fpsFrameHistory.filter(f => f.time > thirtySecondsAgo);
+  // 清理超过10秒的数据，且最多每500ms清理一次。
+  if (now - lastFPSHeavyCalc > 500) {
+    const tenSecondsAgo = now - 10000;
+    fpsFrameHistory = fpsFrameHistory.filter(f => f.time > tenSecondsAgo);
+    lastFPSHeavyCalc = now;
+  }
   
-  // 更新显示
-  if (fpsDisplayElement) {
+  // 更新显示：DOM 最多每250ms更新一次，避免每帧 innerHTML。
+  if (fpsDisplayElement && now - lastFPSDomUpdate >= 250) {
+    lastFPSDomUpdate = now;
     // 计算3秒平均帧（基于最近3秒的帧数据）
     const threeSecondsAgo = now - 3000;
     const recentFrames = fpsFrameHistory.filter(f => f.time > threeSecondsAgo);
@@ -3496,7 +3571,10 @@ function updateFPS() {
       displayText += `<br><span style="font-size: 10px; color: ${latencyColor};">Net: ${networkLatency}ms</span>`;
     }
     
-    fpsDisplayElement.innerHTML = displayText;
+    if (displayText !== cachedFPSDisplayText) {
+      cachedFPSDisplayText = displayText;
+      fpsDisplayElement.innerHTML = displayText;
+    }
   }
   
   // 调试日志
@@ -3596,6 +3674,7 @@ function calculateGPUUsage() {
 
 // 测量网络延迟
 function measureNetworkLatency() {
+  if (document.hidden) return;
   const startTime = performance.now();
   
   // 使用fetch请求当前页面或一个小的资源来测量延迟
@@ -3625,8 +3704,8 @@ function startNetworkLatencyMonitoring() {
   // 立即测量一次
   measureNetworkLatency();
   
-  // 每2秒测量一次
-  networkLatencyInterval = setInterval(measureNetworkLatency, 2000);
+  // 每10秒测量一次，减少网络与电量消耗。
+  networkLatencyInterval = setInterval(measureNetworkLatency, 10000);
 }
 
 // 停止网络延迟监测
@@ -3671,3 +3750,4 @@ window.TEXT_CONFIG = {
         window.TEXT_CONFIG.backgroundApi = originalBackgroundApi + '/' + width + '/' + height + '?random=' + randomId + '&_t=' + Date.now();
     }
 })();
+
