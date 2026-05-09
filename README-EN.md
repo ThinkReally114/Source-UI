@@ -1,4 +1,4 @@
-**English** | [简体中文](README-ZH-CH.md) | [繁體中文](README.md)
+ **English** | [简体中文](README.md) | [繁體中文](README-ZH-HK.md)
 
 <div align="center">
 
@@ -22,7 +22,7 @@ A simulated mobile operating system interface built with HTML/CSS/JavaScript.
 - **Animations**: CSS Transitions, CSS Animations
 - **Icons**: SVG Icons
 
-- ## Local Development
+## Local Development
 
 ```bash
 # Clone the repository
